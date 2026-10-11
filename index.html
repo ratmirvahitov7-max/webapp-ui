@@ -3,274 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Playerok Helper</title>
+    <title>Playerok WebApp</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #0b101a; color: #ffffff; padding-bottom: 100px; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0d131f; color: #ffffff; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
         
-        /* Верхняя панель профиля */
-        .user-header {
+        /* Шапка профиля */
+        .header-panel {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 20px; background: #111823; border-bottom: 1px solid #1f293d;
+            padding: 16px 20px; background: #131b2e; border-bottom: 1px solid #1e293b;
         }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .avatar {
-            width: 44px; height: 44px; background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        .profile-info { display: flex; align-items: center; gap: 12px; }
+        .avatar-box {
+            width: 44px; height: 44px; background: #1a2338; border: 1px solid #2a3959;
             border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px; position: relative;
+            font-weight: bold; font-size: 16px; color: #3b82f6; position: relative;
         }
-        .premium-badge {
-            position: absolute; bottom: -4px; right: -4px; background: #fbbf24; color: #000;
-            font-size: 9px; font-weight: bold; padding: 2px 4px; border-radius: 4px;
+        .badge-premium {
+            position: absolute; bottom: -4px; right: -4px; background: #f59e0b; color: #000;
+            font-size: 8px; font-weight: bold; padding: 2px 5px; border-radius: 4px; display: none;
         }
-        .user-details .name { font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 6px; }
-        .user-details .tag { color: #64748b; font-size: 12px; }
+        .profile-text .name { font-weight: bold; font-size: 14px; }
+        .profile-text .id { color: #64748b; font-size: 11px; margin-top: 2px; }
         
-        .balance-card {
-            background: #151e2b; border: 1px solid #233147; padding: 8px 12px; border-radius: 10px;
-            display: flex; flex-direction: column; align-items: flex-end;
+        .btn-wallet {
+            background: #2563eb; color: white; border: none; padding: 9px 16px;
+            border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235,.3); transition: 0.2s;
         }
-        .balance-amount { font-weight: bold; font-size: 14px; color: #10b981; }
-        
-        /* Кнопка пополнения */
-        .btn-topup {
-            background: #3b82f6; color: white; border: none; padding: 8px 16px;
-            border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer;
-            display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
+        .btn-wallet:active { transform: scale(0.96); }
 
-        /* Горизонтальное меню вкладок */
-        .horizontal-nav {
+        /* Горизонтальное меню */
+        .tabs-scroller {
             display: flex; gap: 8px; overflow-x: auto; padding: 12px 20px;
-            background: #0b101a; border-bottom: 1px solid #1f293d; white-space: nowrap;
+            background: #0d131f; border-bottom: 1px solid #1e293b; white-space: nowrap;
             scrollbar-width: none;
         }
-        .horizontal-nav::-webkit-scrollbar { display: none; }
-        .nav-tab {
-            background: #151e2b; color: #94a3b8; padding: 8px 16px; border-radius: 20px;
-            font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid #233147;
+        .tabs-scroller::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            background: #131b2e; color: #94a3b8; padding: 7px 16px; border-radius: 20px;
+            font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid #1e293b;
             transition: 0.2s;
         }
-        .nav-tab.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+        .tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
-        .container { padding: 20px; }
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+        .main-content { padding: 16px; }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.2s ease-in-out; }
 
         /* Карточки */
-        .card {
-            background: #151e2b; border-radius: 16px; padding: 16px; margin-bottom: 16px;
-            border: 1px solid #233147; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        .panel-card {
+            background: #131b2e; border-radius: 16px; padding: 16px; margin-bottom: 14px;
+            border: 1px solid #1e293b; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .card-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; color: #f8fafc; }
+        .card-heading { font-size: 14px; font-weight: bold; margin-bottom: 12px; color: #f8fafc; }
 
-        /* Плагины и Магазин */
-        .plugin-item {
+        /* Элементы и переключатели (Настройки) */
+        .control-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: #1a2436; padding: 14px; border-radius: 12px; margin-bottom: 10px;
-            border: 1px solid #233147;
+            background: #1a2338; padding: 12px 14px; border-radius: 12px; margin-bottom: 8px;
+            border: 1px solid #263554; cursor: pointer; transition: 0.2s;
         }
-        .toggle-switch {
-            width: 44px; height: 24px; background: #334155; border-radius: 12px; position: relative; cursor: pointer; transition: 0.3s;
+        .control-row:active { transform: scale(0.98); }
+        .setting-icon { width: 24px; text-align: center; font-size: 16px; margin-right: 10px; }
+        .setting-info { display: flex; align-items: center; }
+        .setting-title { font-weight: bold; font-size: 13px; }
+        .setting-desc { font-size: 11px; color: #64748b; margin-top: 2px; }
+        .setting-arrow { color: #64748b; font-size: 16px; font-weight: bold; }
+        
+        .switch-toggle {
+            width: 42px; height: 24px; background: #334155; border-radius: 12px; position: relative; cursor: pointer; transition: 0.3s;
         }
-        .toggle-switch::after {
+        .switch-toggle::after {
             content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
             background: white; border-radius: 50%; transition: 0.3s;
         }
-        .toggle-switch.active { background: #3b82f6; }
-        .toggle-switch.active::after { left: 22px; }
+        .switch-toggle.active { background: #2563eb; }
+        .switch-toggle.active::after { left: 20px; }
 
-        /* Калькулятор сделок */
-        .calc-input-group { margin-bottom: 12px; }
-        .calc-input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
-        .calc-input {
-            width: 100%; background: #0b101a; border: 1px solid #233147; color: white;
-            padding: 12px; border-radius: 10px; font-size: 16px; outline: none;
-        }
-        .calc-input:focus { border-color: #3b82f6; }
-        .calc-result { background: #1a2436; padding: 14px; border-radius: 12px; margin-top: 15px; }
-        .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-
-        /* Статистика Сетка */
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .stat-box { background: #1a2436; padding: 14px; border-radius: 12px; border: 1px solid #233147; }
-        .stat-val { font-size: 18px; font-weight: bold; margin-top: 4px; color: #f8fafc; }
-
-        /* Модальные окна (Пополнение) */
-        .modal {
+        /* Модальные окна (Подменю настроек) */
+        .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 16, 26, 0.85); z-index: 1000; align-items: center; justify-content: center;
-            backdrop-filter: blur(6px); padding: 20px;
+            background: rgba(13, 19, 31, 0.85); z-index: 1000; align-items: flex-end; justify-content: center;
+            backdrop-filter: blur(4px);
         }
-        .modal-card { background: #151e2b; border-radius: 20px; padding: 24px; width: 100%; max-width: 360px; border: 1px solid #233147; }
-        .btn-main { background: #3b82f6; color: white; border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 12px; }
-        .btn-close { background: #334155; color: white; border: none; width: 100%; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+        .modal-window { 
+            background: #131b2e; border-top-left-radius: 20px; border-top-right-radius: 20px; 
+            padding: 24px; width: 100%; border-top: 1px solid #1e293b; max-height: 85vh; overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+        .modal-header { font-size: 16px; font-weight: bold; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .close-icon { color: #64748b; font-size: 20px; cursor: pointer; padding: 4px; }
+        
+        /* Элементы внутри модалок */
+        .calc-input {
+            width: 100%; background: #0d131f; border: 1px solid #263554; color: white;
+            padding: 12px; border-radius: 10px; font-size: 14px; outline: none; margin-bottom: 12px;
+        }
+        .btn-action { background: #2563eb; color: white; border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 13px; cursor: pointer; margin-top: 10px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- Верхняя плашка профиля -->
-    <div class="user-header">
-        <div class="user-info">
-            <div class="avatar">
-                Х
-                <div class="premium-badge">PRO</div>
-            </div>
-            <div class="user-details">
-                <div class="name">Хайпажор <span style="font-size: 11px; background: #fbbf24; color: #000; padding: 1px 6px; border-radius: 4px;">PREMIUM</span></div>
-                <div class="tag">ID: 7144541492</div>
+    <!-- Шапка панели -->
+    <div class="header-panel">
+        <div class="profile-info">
+            <div class="avatar-box" id="userAvatar">U<div class="badge-premium" id="premMarker">PRO</div></div>
+            <div class="profile-text">
+                <div class="name" id="profileName">Пользователь</div>
+                <div class="id" id="profileId">ID: ---</div>
             </div>
         </div>
-        <button class="btn-topup" onclick="openTopup()">+ Пополнить</button>
+        <button class="btn-wallet" onclick="buyPremium()">Купить PRO</button>
     </div>
 
-    <!-- Горизонтальное меню (вкладки как в референсе) -->
-    <div class="horizontal-nav">
-        <div class="nav-tab active" onclick="switchTab('shops', this)">Магазины</div>
-        <div class="nav-tab" onclick="switchTab('plugins', this)">Плагины</div>
-        <div class="nav-tab" onclick="switchTab('stats', this)">Статистика</div>
-        <div class="nav-tab" onclick="switchTab('calc', this)">Калькулятор</div>
-        <div class="nav-tab" onclick="switchTab('settings', this)">Настройки</div>
+    <!-- Вкладки управления -->
+    <div class="tabs-scroller">
+        <div class="tab-btn active" onclick="switchSection('settingsSec', this)">Настройки бота</div>
+        <div class="tab-btn" onclick="switchSection('shopSec', this)">Магазин</div>
+        <div class="tab-btn" onclick="switchSection('statsSec', this)">Статистика</div>
     </div>
 
-    <div class="container">
+    <div class="main-content">
 
-        <!-- Вкладка 1: Магазины -->
-        <div id="shops" class="tab-pane active">
-            <div class="card">
-                <div class="card-title">Активные магазины</div>
-                <div class="plugin-item">
-                    <div>
-                        <div style="font-weight: bold;">SellGemina</div>
-                        <div style="font-size: 12px; color: #10b981; margin-top: 2px;">● Активный токен</div>
+        <!-- Вкладка: Настройки (Полностью по видео) -->
+        <div id="settingsSec" class="content-section active">
+            
+            <!-- Блок 1: Автоматизация -->
+            <div class="panel-card">
+                <div class="card-heading">Автоматизация</div>
+                
+                <div class="control-row" onclick="openModal('modalAutoBoost')">
+                    <div class="setting-info">
+                        <span class="setting-icon">🚀</span>
+                        <div>
+                            <div class="setting-title">Авто-поднятие 🔒</div>
+                            <div class="setting-desc">Расписание поднятия лотов</div>
+                        </div>
                     </div>
-                    <div style="text-align: right; font-size: 13px; font-weight: bold;">1 972 ₽</div>
+                    <div class="setting-arrow">›</div>
                 </div>
-                <button class="btn-main" style="margin-top: 10px;">+ Добавить магазин</button>
-            </div>
-            <div class="card">
-                <div class="card-title">Холд средств</div>
-                <div style="display: flex; justify-content: space-between; font-size: 14px; color: #94a3b8; margin-bottom: 6px;">
-                    <span>В заморозке:</span> <span style="color: #fff; font-weight: bold;">972 ₽</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 14px; color: #94a3b8;">
-                    <span>Доступно:</span> <span style="color: #10b981; font-weight: bold;">1 649 ₽</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Вкладка 2: Плагины -->
-        <div id="plugins" class="tab-pane">
-            <div class="card">
-                <div class="card-title">Каталог плагинов</div>
-                <div class="plugin-item">
-                    <div>
-                        <div style="font-weight: bold;">Telegram Stars</div>
-                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Автоматическая выдача за звёзды</div>
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">💳</span>
+                        <div>
+                            <div class="setting-title">Авто-вывод 🔒</div>
+                            <div class="setting-desc">Автоматический вывод средств</div>
+                        </div>
                     </div>
-                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    <div class="setting-arrow">›</div>
                 </div>
-                <div class="plugin-item">
-                    <div>
-                        <div style="font-weight: bold;">Аренда Steam</div>
-                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Автоматическая выдача аккаунтов</div>
-                    </div>
-                    <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
-                </div>
-                <div class="plugin-item">
-                    <div>
-                        <div style="font-weight: bold;">Playerok Авто Дамп</div>
-                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Следит за рынком и ценами</div>
-                    </div>
-                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Вкладка 3: Статистика -->
-        <div id="stats" class="tab-pane">
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <div style="font-size: 12px; color: #94a3b8;">Успешных сделок</div>
-                    <div class="stat-val">361</div>
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">♻️</span>
+                        <div><div class="setting-title">Авто-восстановление</div></div>
+                    </div>
+                    <div class="switch-toggle active" onclick="this.classList.toggle('active'); event.stopPropagation();"></div>
                 </div>
-                <div class="stat-box">
-                    <div style="font-size: 12px; color: #94a3b8;">Возвратов</div>
-                    <div class="stat-val" style="color: #ef4444;">172</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-title">Финансовая сводка</div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
-                    <span style="color: #94a3b8;">Грязная выручка:</span>
-                    <span style="font-weight: bold;">94 264 ₽</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
-                    <span style="color: #94a3b8;">Чистая прибыль:</span>
-                    <span style="font-weight: bold; color: #10b981;">60 631 ₽</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Вкладка 4: Калькулятор -->
-        <div id="calc" class="tab-pane">
-            <div class="card">
-                <div class="card-title">Калькулятор сделки</div>
-                <div class="calc-input-group">
-                    <label>Цена продажи (₽)</label>
-                    <input type="number" id="priceInput" class="calc-input" value="1000" oninput="calculateProfit()">
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">⚡</span>
+                        <div><div class="setting-title">Авто-выполнение</div></div>
+                    </div>
+                    <div class="switch-toggle active" onclick="this.classList.toggle('active'); event.stopPropagation();"></div>
                 </div>
-                <div class="calc-input-group">
-                    <label>Комиссия площадки (%)</label>
-                    <input type="number" id="commInput" class="calc-input" value="10" oninput="calculateProfit()">
+            </div>
+
+            <!-- Блок 2: Общение и Отзывы -->
+            <div class="panel-card">
+                <div class="card-heading">Общение с клиентами</div>
+                
+                <div class="control-row" onclick="openModal('modalAutoReply')">
+                    <div class="setting-info">
+                        <span class="setting-icon">💬</span>
+                        <div>
+                            <div class="setting-title">Автоответчик</div>
+                            <div class="setting-desc">Фильтры, команды и точное совпадение</div>
+                        </div>
+                    </div>
+                    <div class="setting-arrow">›</div>
                 </div>
-                <div class="calc-input-group">
-                    <label>Закупка товара (₽)</label>
-                    <input type="number" id="buyInput" class="calc-input" value="150" oninput="calculateProfit()">
+
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">📝</span>
+                        <div><div class="setting-title">Заготовки ответов</div></div>
+                    </div>
+                    <div class="setting-arrow">›</div>
+                </div>
+
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">⭐</span>
+                        <div>
+                            <div class="setting-title">Мониторинг отзывов 🔒</div>
+                            <div class="setting-desc">Уведомления и авто-ответы на оценки</div>
+                        </div>
+                    </div>
+                    <div class="setting-arrow">›</div>
                 </div>
                 
-                <div class="calc-result">
-                    <div class="calc-row"><span>На руки:</span> <strong id="resHands" style="color: #10b981;">846 ₽</strong></div>
-                    <div class="calc-row"><span>Чистая прибыль:</span> <strong id="resProfit" style="color: #3b82f6;">696 ₽</strong></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Вкладка 5: Настройки -->
-        <div id="settings" class="tab-pane">
-            <div class="card">
-                <div class="card-title">Звуковые уведомления</div>
-                <div class="plugin-item">
-                    <div>
-                        <div style="font-weight: bold;">Звук при покупке</div>
-                        <div style="font-size: 12px; color: #94a3b8;">Кастомный сигнал в Telegram</div>
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">🔔</span>
+                        <div>
+                            <div class="setting-title">Напоминания</div>
+                            <div class="setting-desc">Об отзыве и подтверждении</div>
+                        </div>
                     </div>
-                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    <div class="setting-arrow">›</div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-title">Автоответы</div>
-                <div style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">Сообщение покупателю при оплате:</div>
-                <textarea class="calc-input" style="height: 80px; resize: none;">Спасибо за покупку! Ожидайте выдачу товара.</textarea>
-                <button class="btn-main" style="margin-top: 10px;">Сохранить текст</button>
+
+            <!-- Блок 3: Система и Контроль -->
+            <div class="panel-card">
+                <div class="card-heading">Система</div>
+                
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">📱</span>
+                        <div><div class="setting-title">Уведомления</div></div>
+                    </div>
+                    <div class="setting-arrow">›</div>
+                </div>
+
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">🚫</span>
+                        <div><div class="setting-title">Черный список</div></div>
+                    </div>
+                    <div class="setting-arrow">›</div>
+                </div>
+
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">⚙️</span>
+                        <div><div class="setting-title">Переключатели</div></div>
+                    </div>
+                    <div class="setting-arrow">›</div>
+                </div>
+                
+                <div class="control-row">
+                    <div class="setting-info">
+                        <span class="setting-icon">🔄</span>
+                        <div style="color: #ef4444;"><div class="setting-title">Сбросить настройки</div></div>
+                    </div>
+                </div>
             </div>
+
         </div>
 
+        <!-- Заглушки других вкладок -->
+        <div id="shopSec" class="content-section"><div class="panel-card"><div class="card-heading">Управление магазинами</div><p style="color:#64748b; font-size:13px;">Здесь будут лоты и магазины.</p></div></div>
+        <div id="statsSec" class="content-section"><div class="panel-card"><div class="card-heading">Финансы</div><p style="color:#64748b; font-size:13px;">Графики и доходы.</p></div></div>
     </div>
 
-    <!-- Модальное окно пополнения -->
-    <div id="topupModal" class="modal">
-        <div class="modal-card">
-            <div class="card-title" style="margin-bottom: 16px;">Пополнение баланса</div>
-            <div class="calc-input-group">
-                <label>Сумма пополнения (₽)</label>
-                <input type="number" class="calc-input" placeholder="500">
+    <!-- Модальное окно: Авто-поднятие (Пример интерфейса настройки функции) -->
+    <div id="modalAutoBoost" class="modal-overlay" onclick="if(event.target===this) closeModal('modalAutoBoost')">
+        <div class="modal-window">
+            <div class="modal-header">
+                Авто-поднятие 🚀
+                <span class="close-icon" onclick="closeModal('modalAutoBoost')">✕</span>
             </div>
-            <button class="btn-main" onclick="alert('Перенаправление на оплату...')">Оплатить (USDT / Карты)</button>
-            <button class="btn-close" onclick="closeTopup()">Закрыть</button>
+            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 16px;">Функция доступна только с подпиской PREMIUM.</div>
+            
+            <input type="text" class="calc-input" placeholder="Ссылка на товар (лоты Playerok)">
+            <input type="time" class="calc-input" value="12:00">
+            
+            <button class="btn-action">Добавить в расписание</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Автоответчик (Пример сложной настройки) -->
+    <div id="modalAutoReply" class="modal-overlay" onclick="if(event.target===this) closeModal('modalAutoReply')">
+        <div class="modal-window">
+            <div class="modal-header">
+                Автоответчик 💬
+                <span class="close-icon" onclick="closeModal('modalAutoReply')">✕</span>
+            </div>
+            
+            <div class="control-row" style="background: #0d131f;">
+                <div><div class="setting-title">Точное соответствие</div></div>
+                <div class="switch-toggle" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="control-row" style="background: #0d131f;">
+                <div><div class="setting-title">Уведомление в Telegram</div></div>
+                <div class="switch-toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            
+            <input type="text" class="calc-input" placeholder="!команда или ключевое слово" style="margin-top: 10px;">
+            <textarea class="calc-input" placeholder="Текст ответа..." style="height: 80px; resize: none;"></textarea>
+            
+            <button class="btn-action">Сохранить автоответ</button>
         </div>
     </div>
 
@@ -279,27 +310,23 @@
         tg.expand();
         tg.ready();
 
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+        function buyPremium() {
+            document.getElementById('premMarker').style.display = 'block';
+            alert('PRO доступ активирован! Замки разблокированы.');
+        }
+
+        function switchSection(secId, element) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.getElementById(secId).classList.add('active');
             element.classList.add('active');
         }
 
-        function openTopup() { document.getElementById('topupModal').style.display = 'flex'; }
-        function closeTopup() { document.getElementById('topupModal').style.display = 'none'; }
-
-        function calculateProfit() {
-            let price = parseFloat(document.getElementById('priceInput').value) || 0;
-            let comm = parseFloat(document.getElementById('commInput').value) || 0;
-            let buy = parseFloat(document.getElementById('buyInput').value) || 0;
-
-            let platformFee = price * (comm / 100);
-            let hands = price - platformFee;
-            let profit = hands - buy;
-
-            document.getElementById('resHands').innerText = hands.toFixed(0) + ' ₽';
-            document.getElementById('resProfit').innerText = profit.toFixed(0) + ' ₽';
+        function openModal(id) { 
+            document.getElementById(id).style.display = 'flex'; 
+        }
+        function closeModal(id) { 
+            document.getElementById(id).style.display = 'none'; 
         }
     </script>
 </body>
