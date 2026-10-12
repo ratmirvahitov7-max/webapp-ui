@@ -1,333 +1,767 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Playerok WebApp</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #0d131f; color: #ffffff; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
-        
-        /* Шапка профиля */
-        .header-panel {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 20px; background: #131b2e; border-bottom: 1px solid #1e293b;
-        }
-        .profile-info { display: flex; align-items: center; gap: 12px; }
-        .avatar-box {
-            width: 44px; height: 44px; background: #1a2338; border: 1px solid #2a3959;
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 16px; color: #3b82f6; position: relative;
-        }
-        .badge-premium {
-            position: absolute; bottom: -4px; right: -4px; background: #f59e0b; color: #000;
-            font-size: 8px; font-weight: bold; padding: 2px 5px; border-radius: 4px; display: none;
-        }
-        .profile-text .name { font-weight: bold; font-size: 14px; }
-        .profile-text .id { color: #64748b; font-size: 11px; margin-top: 2px; }
-        
-        .btn-wallet {
-            background: #2563eb; color: white; border: none; padding: 9px 16px;
-            border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 99, 235,.3); transition: 0.2s;
-        }
-        .btn-wallet:active { transform: scale(0.96); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Playerok Helper</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#121318; --c1:#272733; --c2:#22222c; --line:#34353f; --line2:#3d3e4b;
+  --tabbg:#191a1f; --tabline:#2a2b33; --navy:#18264d; --navyline:#2e4fb5;
+  --text:#f2f3f8; --mute:#9697a6; --dim:#6f7080;
+  --blue:#1a59ff; --green:#43b563; --red:#ef6a5b; --amber:#f0a93a; --sky:#43a3f2; --link:#a9b7ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.4}
+body{min-height:100vh;padding-bottom:calc(36px + env(safe-area-inset-bottom))}
+.app{max-width:520px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) 14px 0}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--text)}
 
-        /* Горизонтальное меню */
-        .tabs-scroller {
-            display: flex; gap: 8px; overflow-x: auto; padding: 12px 20px;
-            background: #0d131f; border-bottom: 1px solid #1e293b; white-space: nowrap;
-            scrollbar-width: none;
-        }
-        .tabs-scroller::-webkit-scrollbar { display: none; }
-        .tab-btn {
-            background: #131b2e; color: #94a3b8; padding: 7px 16px; border-radius: 20px;
-            font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid #1e293b;
-            transition: 0.2s;
-        }
-        .tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+/* шапка */
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.topbar svg{flex:none}
+.topbar h1{font-size:21px;font-weight:700;letter-spacing:-.3px}
+.topbar .sub{color:var(--mute);font-size:13px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:#16233a;border:1px solid #2a4167;color:#bcd0ff;font-size:13px;font-weight:600}
+.chip.star{background:#16213a;border-color:#2b3d6b}
+.chip.demo{background:#2c2514;border-color:#5b4a1d;color:#f3c76a}
+.tgi{width:20px;height:20px;border-radius:50%;background:#2aabee;display:grid;place-items:center}
 
-        .main-content { padding: 16px; }
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+/* карточки */
+.card{background:linear-gradient(180deg,var(--c1),#23232d);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.card.blue{background:linear-gradient(135deg,#262b4e,#25252f 55%,#24242e);border-color:#33407a}
+.inner{background:rgba(255,255,255,.03);border:1px solid var(--line2);border-radius:14px;padding:12px}
+.label{font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--mute)}
+.row{display:flex;align-items:center;gap:12px}
+.grow{flex:1;min-width:0}
+.avatar{width:50px;height:50px;border-radius:50%;padding:2px;background:linear-gradient(135deg,#3e9978,#3b6fe0);flex:none}
+.avatar span{width:100%;height:100%;border-radius:50%;background:#16171d;display:grid;place-items:center;font-weight:700;font-size:18px}
+.name{font-weight:700;font-size:17px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.meta{color:var(--mute);font-size:13px;margin-top:2px}
+.meta a,.meta .u{color:var(--link)}
+.badge{padding:3px 9px;border-radius:8px;font-size:10px;font-weight:800;letter-spacing:.5px;background:linear-gradient(180deg,#ffd983,#f5a524);color:#3a2600}
+.badge.green{background:rgba(67,181,99,.15);color:var(--green);border:1px solid rgba(67,181,99,.4)}
+.balance{padding:7px 12px;border-radius:11px;background:#222f2b;border:1px solid #2e4a3a;text-align:center}
+.balance small{display:block;color:#8fa59a;font-size:9px;font-weight:700;letter-spacing:.8px}
+.balance b{color:var(--green);font-size:16px}
+.iconbtn{width:44px;height:44px;border-radius:12px;background:#2a2a36;border:1px solid var(--line2);display:grid;place-items:center;color:#aeb0c0;flex:none}
 
-        /* Карточки */
-        .panel-card {
-            background: #131b2e; border-radius: 16px; padding: 16px; margin-bottom: 14px;
-            border: 1px solid #1e293b; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .card-heading { font-size: 14px; font-weight: bold; margin-bottom: 12px; color: #f8fafc; }
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:13px;font-weight:700;font-size:14px;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(180deg,#2d68ff,#1a59ff);box-shadow:0 6px 20px rgba(26,89,255,.45)}
+.btn.ghost{background:#24242e;border:1px solid var(--line2);color:#d4d6e4}
+.btn.soft{background:#17234a;border:1px solid #2b4aa8;color:#b9cdff}
+.btn.danger{background:rgba(239,106,91,.1);border:1px solid rgba(239,106,91,.35);color:var(--red)}
+.btn.block{width:100%}
+.btn.sm{padding:9px 13px;font-size:12px;border-radius:10px}
+.btns{display:flex;gap:12px}
+.btns .btn{flex:1}
 
-        /* Элементы и переключатели (Настройки) */
-        .control-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #1a2338; padding: 12px 14px; border-radius: 12px; margin-bottom: 8px;
-            border: 1px solid #263554; cursor: pointer; transition: 0.2s;
-        }
-        .control-row:active { transform: scale(0.98); }
-        .setting-icon { width: 24px; text-align: center; font-size: 16px; margin-right: 10px; }
-        .setting-info { display: flex; align-items: center; }
-        .setting-title { font-weight: bold; font-size: 13px; }
-        .setting-desc { font-size: 11px; color: #64748b; margin-top: 2px; }
-        .setting-arrow { color: #64748b; font-size: 16px; font-weight: bold; }
-        
-        .switch-toggle {
-            width: 42px; height: 24px; background: #334155; border-radius: 12px; position: relative; cursor: pointer; transition: 0.3s;
-        }
-        .switch-toggle::after {
-            content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
-            background: white; border-radius: 50%; transition: 0.3s;
-        }
-        .switch-toggle.active { background: #2563eb; }
-        .switch-toggle.active::after { left: 20px; }
+/* вкладки */
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:5px;background:var(--tabbg);border:1px solid var(--tabline);border-radius:16px;margin-bottom:16px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:10px 16px;border-radius:12px;color:#a2a3b2;font-weight:600;font-size:14px;white-space:nowrap;border:1px solid transparent}
+.tab.on{background:var(--navy);border-color:var(--navyline);color:#fff;box-shadow:0 0 18px rgba(46,79,181,.35)}
+.tabs.sub .tab{padding:9px 14px;font-size:13px}
 
-        /* Модальные окна (Подменю настроек) */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(13, 19, 31, 0.85); z-index: 1000; align-items: flex-end; justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-        .modal-window { 
-            background: #131b2e; border-top-left-radius: 20px; border-top-right-radius: 20px; 
-            padding: 24px; width: 100%; border-top: 1px solid #1e293b; max-height: 85vh; overflow-y: auto;
-            animation: slideUp 0.3s ease-out;
-        }
-        .modal-header { font-size: 16px; font-weight: bold; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .close-icon { color: #64748b; font-size: 20px; cursor: pointer; padding: 4px; }
-        
-        /* Элементы внутри модалок */
-        .calc-input {
-            width: 100%; background: #0d131f; border: 1px solid #263554; color: white;
-            padding: 12px; border-radius: 10px; font-size: 14px; outline: none; margin-bottom: 12px;
-        }
-        .btn-action { background: #2563eb; color: white; border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 13px; cursor: pointer; margin-top: 10px; }
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{text-align:center;padding:6px 4px}
+.stat .label{display:block;margin-bottom:6px}
+.stat b{font-size:24px;font-weight:700}
+.stat.wide{grid-column:1/-1;border-top:1px solid var(--line);padding-top:14px}
+.big{font-size:34px;font-weight:800;letter-spacing:-.5px}
+.pos{color:var(--green)} .neg{color:var(--red)}
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    </style>
+.shop{display:flex;align-items:center;gap:12px;border-color:#33407a}
+.pic{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#6d3fe0,#2d68ff);display:grid;place-items:center;font-weight:700;flex:none}
+.pills{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+.pill{padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:#2a2a36;border:1px solid var(--line2);color:#c5c8d8}
+.pill.r{background:rgba(239,106,91,.12);border-color:rgba(239,106,91,.4);color:var(--red)}
+
+/* плагины */
+.ptile{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:23px;flex:none;background:linear-gradient(180deg,#2d68ff,#1a45d6)}
+.ptile.big{width:56px;height:56px;font-size:27px}
+.ptitle{font-weight:700;font-size:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lockchip{font-size:10px;font-weight:800;padding:2px 8px;border-radius:7px;background:rgba(240,169,58,.12);color:var(--amber);border:1px solid rgba(240,169,58,.35)}
+.gear{margin-left:auto;width:36px;height:36px;border-radius:11px;border:1px solid var(--line2);background:#24242e;display:grid;place-items:center;color:#b3b5c6;flex:none;font-size:16px}
+.desc{color:#c3c5d4;font-size:14px;margin:12px 0 8px}
+.perks{list-style:none;margin:8px 0 12px;display:grid;gap:8px}
+.perks li{display:flex;gap:10px;color:#c9cbd9;font-size:14px}
+.perks li::before{content:'✓';color:var(--green);font-weight:800}
+.pfoot{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line);color:var(--mute);font-size:12px;font-weight:700;letter-spacing:.8px}
+.pfoot span{display:flex;align-items:center;gap:9px}
+.pfoot span::before{content:'';width:8px;height:8px;border-radius:50%;background:#5a5b68}
+.pfoot.on{color:var(--green)}
+.pfoot.on span::before{background:var(--green)}
+.switch{width:50px;height:28px;border-radius:999px;background:#3a3b46;position:relative;transition:.2s;flex:none}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on{background:var(--blue)}
+.switch.on::after{left:25px}
+
+/* страница плагина */
+.phead{display:flex;align-items:center;gap:12px}
+.back{width:38px;height:38px;border-radius:11px;background:#2a2a36;border:1px solid var(--line2);display:grid;place-items:center;font-size:18px;flex:none}
+.phead h2{font-size:21px;font-weight:700;line-height:1.15}
+.how .label{display:flex;gap:8px;align-items:center;color:#a9b7ff;margin-bottom:12px}
+.how p{color:#c9cbd9;font-size:14px;margin-bottom:10px}
+.quote{border-left:3px solid #3a63e0;background:#1d2547;border-radius:12px;padding:12px 14px;color:#c9d3f5;font-size:13px;margin-top:6px}
+.warnbox{background:#2a2418;border:1px solid #5b4a1d;border-radius:14px;padding:12px 14px;color:#f3c76a;font-size:13px;margin-bottom:14px}
+.phs{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.ph{display:flex;align-items:center;gap:10px;background:#1c1d25;border:1px solid var(--line2);border-radius:12px;padding:8px 12px;text-align:left;width:max-content;max-width:100%}
+.ph code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#8fb0ff;background:#1b2447;border:1px solid #2b3b78;border-radius:7px;padding:2px 8px;flex:none}
+.ph span{color:#c3c5d4;font-size:13px}
+.tpl .label{margin-bottom:10px}
+.tpl .hint{color:var(--dim);font-size:12px;margin-top:8px}
+.field{width:100%;background:#1d1e26;border:1px solid var(--line2);border-radius:13px;padding:13px;outline:none;color:var(--text);line-height:1.45}
+.field:focus{border-color:#3a63e0}
+textarea.field{min-height:92px;resize:vertical}
+.fl{display:block;color:var(--mute);font-size:12px;font-weight:600;margin:14px 0 7px}
+.seg{display:flex;background:#1d1e26;border:1px solid var(--line2);border-radius:13px;padding:3px}
+.seg button{flex:1;padding:10px;border-radius:10px;color:var(--mute);font-weight:700}
+.seg button.on{background:var(--navy);color:#fff;box-shadow:inset 0 0 0 1px var(--navyline)}
+.frow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+.frow+.frow{border-top:1px solid var(--line)}
+
+.empty{text-align:center;padding:30px 14px;color:var(--mute)}
+.empty .ic{font-size:32px;margin-bottom:10px}
+.empty b{display:block;color:var(--text);font-size:16px;margin-bottom:6px}
+.empty .btn{margin-top:16px}
+.lockbig{width:66px;height:66px;margin:4px auto 14px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:rgba(240,169,58,.1);border:1px solid rgba(240,169,58,.35)}
+
+/* холд */
+.bucket{position:relative;overflow:hidden;background:rgba(255,255,255,.025);border:1px solid var(--line2);border-radius:15px;padding:13px}
+.bucket::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:var(--bc)}
+.bucket .hd{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;letter-spacing:.7px;color:#b4b6c6;text-transform:uppercase}
+.pc{padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.06);font-size:11px;color:var(--bc)}
+.bucket .v{font-size:21px;font-weight:700;margin:9px 0 9px}
+.bar{height:5px;border-radius:5px;background:#33333d;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--bc);border-radius:5px}
+.bucket .dl{color:var(--mute);font-size:13px;margin-top:10px}
+input[type=range]{-webkit-appearance:none;width:100%;height:8px;border-radius:8px;background:#333641;outline:none;margin:18px 0 6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid var(--blue);box-shadow:0 0 12px rgba(26,89,255,.6)}
+
+/* гайды */
+.guide summary{list-style:none;display:flex;gap:10px;align-items:center;font-weight:700;font-size:15px;cursor:pointer}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::after{content:'›';margin-left:auto;color:var(--mute);font-size:22px;transition:transform .2s}
+.guide[open] summary::after{transform:rotate(90deg)}
+.guide .body{margin-top:12px;color:#c9cbd9;white-space:pre-wrap;font-size:14px}
+.guide .tools{display:flex;gap:8px;margin-top:14px}
+
+/* модальное окно */
+.overlay{position:fixed;inset:0;background:rgba(6,7,10,.78);backdrop-filter:blur(5px);z-index:50;display:none;align-items:center;justify-content:center;padding:14px}
+.overlay.open{display:flex}
+.sheet{width:100%;max-width:480px;max-height:90vh;overflow-y:auto;background:linear-gradient(180deg,#252631,#1f202a);border:1px solid #3a3b4a;border-radius:24px;padding:20px 18px;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.shead{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.shead h3{font-size:21px;font-weight:700}
+.shead p{color:var(--mute);font-size:14px;margin-top:4px}
+.x{margin-left:auto;width:38px;height:38px;border-radius:11px;border:1px solid var(--line2);background:#2d2e3a;color:#b3b5c6;font-size:15px;flex:none}
+.timer{display:block;width:max-content;margin:14px auto;padding:6px 14px;border-radius:999px;background:#1b2a4d;color:#9cc0ff;font-weight:600;font-size:13px}
+.timer.ok{background:#1d3a2b;color:var(--green)}
+.qr{display:grid;place-items:center;width:210px;height:210px;margin:6px auto 8px;background:#fff;border-radius:22px;padding:16px}
+.qr img,.qr canvas{max-width:100%;height:auto}
+.qrcap{text-align:center;color:var(--mute);font-size:13px;margin-bottom:14px}
+.pf{background:#1e1f28;border:1px solid var(--line2);border-radius:15px;padding:14px;margin-bottom:12px}
+.pf .label{margin-bottom:8px}
+.pf .val{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;word-break:break-all}
+.warn{color:var(--amber);font-size:13px;margin-top:8px}
+.status{display:flex;gap:10px;align-items:center;padding:14px;border-radius:14px;background:#1b2440;border:1px solid #2b3d6b;color:#b6cdfc;margin:4px 0 12px;font-size:14px}
+.status.ok{background:#1b3328;border-color:#2b5a3d;color:var(--green)}
+.status.bad{background:#3a2323;border-color:#6b3030;color:var(--red)}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid #34508f;border-top-color:#8fb4ff;animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.cur{display:flex;gap:7px;overflow-x:auto;margin:12px 0 0;scrollbar-width:none}
+.cur::-webkit-scrollbar{display:none}
+.cur button{flex:none;padding:8px 13px;border-radius:10px;background:#2a2a36;border:1px solid var(--line2);color:var(--mute);font-weight:700;font-size:12px}
+.cur button.on{background:var(--navy);border-color:var(--navyline);color:#fff}
+.center{text-align:center}
+.sec{margin:18px 0 8px;font-weight:700;font-size:15px}
+.gbox p{color:#c9cbd9;font-size:14px;margin-bottom:8px}
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#2f3040;border:1px solid var(--line2);padding:12px 18px;border-radius:13px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:140px;margin-top:8px}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;font-size:11px;color:var(--mute)}
+.bars i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#43a3f2,#1a59ff);min-height:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
+<div class="app" id="app"></div>
+<div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
 
-    <!-- Шапка панели -->
-    <div class="header-panel">
-        <div class="profile-info">
-            <div class="avatar-box" id="userAvatar">U<div class="badge-premium" id="premMarker">PRO</div></div>
-            <div class="profile-text">
-                <div class="name" id="profileName">Пользователь</div>
-                <div class="id" id="profileId">ID: ---</div>
-            </div>
+<script>
+/* ============================================================
+   НАСТРОЙКИ ВЛАДЕЛЬЦА — меняйте только этот блок
+   ============================================================ */
+const CONFIG = {
+  appName: 'Playerok Helper',
+  version: 'v1.0',
+  supportUsername: 'your_support',       // ник поддержки без @
+  apiBase: '',                           // адрес вашего сервера. Пусто = демо-режим (данные только на этом телефоне)
+  payTimeoutMin: 30,                     // минут на оплату
+  plan: { name: 'Premium', priceUsd: 3 },// цена подписки в долларах
+  // perUsd — сколько монет в 1 долларе, dec — знаков после запятой, qr — ссылка на вашу картинку QR (можно пусто)
+  wallets: [
+    { id:'bep20', label:'USDT BEP20', coin:'USDT', perUsd:1,        dec:3, address:'0x0000000000000000000000000000000000000000', qr:'' },
+    { id:'trc20', label:'USDT TRC20', coin:'USDT', perUsd:1,        dec:3, address:'T000000000000000000000000000000000',        qr:'' },
+    { id:'btc',   label:'Bitcoin',    coin:'BTC',  perUsd:0.000015, dec:8, address:'bc1q0000000000000000000000000000000000000', qr:'' },
+    { id:'ton',   label:'TON',        coin:'TON',  perUsd:0.45,     dec:3, address:'UQ00000000000000000000000000000000000000000000', qr:'' },
+    { id:'rub',   label:'Рубли',      coin:'₽',    perUsd:95,       dec:0, address:'Карта или телефон для перевода', qr:'' }
+  ]
+};
+
+/* ---------- Плагины ---------- */
+const PH_STEAM = [
+  ['{login}','Логин Steam-аккаунта'],['{password}','Пароль Steam-аккаунта'],['{code}','Текущий Steam Guard код (для !код)'],
+  ['{seconds}','Сколько секунд ещё валиден'],['{expires}','Дата и время окончания аренды'],['{game}','Название игры'],
+  ['{minutes}','Минут до конца аренды'],['{bonus_hours}','Количество бонусных часов'],['{new_time}','Новое время окончания после бонуса']
+];
+const TPL_RENT = [
+  {k:'issue', title:'Выдача аккаунта', def:'Здравствуйте! Данные для входа:\n🔑 Логин: {login}\n🔒 Пароль: {password}\nАренда до {expires}. Код Steam Guard — по команде !код', vars:['login','password','expires']},
+  {k:'guard', title:'Steam Guard код (по !код)', def:'🔐 Steam Guard код: {code}\n(действует ещё ~{seconds} сек; если истёк — напишите !код снова)', vars:['code','seconds']},
+  {k:'guardLimit', title:'Лимит Guard-кода исчерпан', def:'Лимит запроса Guard кода исчерпан.', vars:[], hint:'Когда покупатель превысил лимит запросов !код'},
+  {k:'warn', title:'Предупреждение об окончании', def:'⏰ Напоминаем, что через {minutes} мин. истекает аренда {game}. Хотите продлить — напишите нам!', vars:['minutes','game','expires']},
+  {k:'reviewAsk', title:'Просьба об отзыве', def:'У вас осталось {minutes} мин. Оставьте отзыв, чтобы продлить аренду на {bonus_hours} ч.', vars:['minutes','bonus_hours']},
+  {k:'bonusOffer', title:'Предложение бонуса за отзыв', def:'⭐ Оставьте отзыв 5 звёзд и получите +{bonus_hours} ч. аренды в подарок!', vars:['bonus_hours']},
+  {k:'bonusDone', title:'Бонус начислен', def:'🎁 Спасибо за отзыв! Аренда продлена на {bonus_hours} ч. Новое время окончания: {new_time}', vars:['bonus_hours','new_time']}
+];
+const FLD_RENT = [
+  {k:'mode', t:'seg', label:'Режим выдачи', opts:[['online','Онлайн'],['offline','Оффлайн']], def:'online'},
+  {k:'bonus', t:'tog', label:'Бонус за отзыв 5 звёзд', def:true},
+  {k:'bonusHours', t:'num', label:'Сколько часов дарить за отзыв', def:2},
+  {k:'guardLimit', t:'num', label:'Лимит запросов !код на одну аренду', def:5},
+  {k:'warnMin', t:'num', label:'Предупреждать об окончании за (мин.)', def:15}
+];
+const PLUGINS = [
+  { id:'boost', icon:'🚀', name:'Авто-поднятие', sub:'Авто-поднятие лотов для удержания топа', free:true,
+    desc:'Следит за позицией ваших лотов на рынке и автоматически поднимает их, если они выпали из нужного места в топе.',
+    perks:['Режимы «Топ» и «Часы»','Проверка рынка каждые 5 минут','Настраиваемое место в топе','Дневной лимит поднятий'],
+    how:['Плагин работает только с активными PREMIUM-объявлениями. Каждый лот настраивается отдельно, лоты не объединяются.','«Топ» — раз в 5 минут проверяет рынок и поднимает лот, если он ниже нужного места.','«Часы» — поднимает лот в заданное время, рынок при этом не проверяется.'],
+    quote:'Проверка рынка идёт автоматически, порциями каждые 5 минут.',
+    pages:[['lots','📦 Лоты'],['settings','⚙️ Настройки']],
+    fields:[
+      {k:'mode', t:'seg', label:'Режим по умолчанию', opts:[['top','Топ'],['hours','Часы']], def:'top'},
+      {k:'place', t:'num', label:'Место в выдаче (режим «Топ»)', def:3},
+      {k:'perDay', t:'num', label:'Поднятий в день (0 — без лимита)', def:0},
+      {k:'hours', t:'text', label:'Время поднятия (режим «Часы»)', ph:'12:00, 18:00, 22:30', def:''}
+    ],
+    guide:[['🚀 Что делает','Поднимает ваши лоты в выдаче Playerok, пока вы заняты другими делами.'],
+           ['🎯 Режим «Топ»','Параметр «Место» — сколько первых позиций проверять. Например, 3 значит «я хочу быть в топ-3». Как только лот выпал из топ-3 — он поднимается.'],
+           ['🕐 Режим «Часы»','Подъём в заданное время, например в 13:00, 18:00 и 20:00, когда покупателей больше всего.'],
+           ['⚡ Быстрый старт','1. Добавьте магазин по токену.\n2. Включите переключатель плагина.\n3. Выберите магазин и режим для каждого лота.']] },
+  { id:'dump', icon:'📉', name:'Авто Дамп', sub:'Автоперебивание цен конкурентов',
+    desc:'Следит за рынком и автоматически опускает цену ваших лотов на 1 ₽ ниже конкурента — строго в заданном диапазоне.',
+    perks:['Индивидуальный диапазон для каждого лота','Проверка рынка каждые 5 минут','Фильтр конкурентов по числу отзывов','Только лоты без PREMIUM'],
+    how:['Цена никогда не выходит за пределы диапазона «от, до».','Нижняя граница «от» — ваша защита: ниже неё плагин цену не опустит.'],
+    quote:'Дампятся только активные лоты без PREMIUM. Для лотов с бустом есть плагин Авто-поднятие.',
+    pages:[['lots','📦 Лоты'],['settings','⚙️ Настройки']], fields:[{k:'minReviews', t:'num', label:'Мин. отзывов у конкурента (0 — фильтр выключен)', def:0}],
+    guide:[['💰 Что делает','Ставит вашу цену чуть ниже конкурента, но не ниже минимума, который вы указали.']] },
+  { id:'delivery', icon:'📦', name:'Автовыдача', sub:'Автовыдача любых товаров из вашего магазина',
+    desc:'Выбирайте свои лоты и заполняйте их под автовыдачу любыми товарами.',
+    perks:['Любые лоты из вашего магазина','Гибкая настройка содержимого','Автодоставка без ручной работы'],
+    how:['После оплаты бот отправляет покупателю следующий товар из вашего списка.','Можно собрать общий склад на несколько лотов.'],
+    quote:'Когда товары закончились, выдача останавливается и приходит уведомление.',
+    pages:[['lots','📦 Лоты'],['templates','✉️ Шаблоны']],
+    placeholders:[['{item}','Выданный товар'],['{order_id}','ID заказа']],
+    templates:[{k:'after', title:'Сообщение после оплаты', def:'Спасибо за покупку! Ваш товар:\n{item}', vars:['item']}],
+    guide:[['📦 Что делает','После оплаты бот сам отправляет покупателю товар из вашего списка.']] },
+  { id:'steam', icon:'🎮', name:'Аренда Steam', sub:'Управление аккаунтами, лотами и арендами',
+    desc:'Автоматическая выдача Steam-аккаунтов в аренду на любой срок. Автовыдача данных, Steam Guard по запросу и смена паролей по окончании.',
+    perks:['Автовыдача аккаунта и смена пароля','Steam Guard по команде !код','Бонус за отзыв 5 звёзд','Онлайн и оффлайн режимы'],
+    how:['При покупке лота бот мгновенно выдаёт покупателю логин и пароль, запуская таймер аренды автоматически.','По команде !код в чате покупатель получает актуальный Steam Guard без вашего участия.','По истечении аренды бот меняет пароль через Steam API, завершая сессию и освобождая аккаунт для новых продаж.','Каждый лот настраивается отдельно и привязан к конкретному товару.'],
+    quote:'Привязка идёт к конкретному товару на Playerok, а не к его названию — лоты с одинаковыми названиями настраиваются по отдельности.',
+    pages:[['accounts','👥 Аккаунты'],['lots','📦 Лоты'],['rent','🎮 Аренда'],['templates','✉️ Шаблоны'],['settings','⚙️ Настройки']],
+    placeholders:PH_STEAM, templates:TPL_RENT, fields:FLD_RENT,
+    empty:{accounts:['Steam-аккаунты','Здесь будут аккаунты для сдачи в аренду.'],rent:['Активные аренды','Текущие аренды и ручное управление появятся здесь.']},
+    guide:[['🎮 Что делает','Выдаёт аккаунт на время аренды, по команде !код присылает Steam Guard, по окончании меняет пароль.']] },
+  { id:'kosell', icon:'🔑', name:'Аренда KoSell', sub:'Автоаренда аккаунтов через каталог',
+    desc:'Сдавайте аккаунты из каталога в аренду. Автовыдача данных, Steam Guard по запросу, завершение и смена пароля — на стороне каталога.',
+    perks:['Автоаренда из каталога','Steam Guard по команде !код','Бонус за отзыв 5 звёзд','Перевыставление по наличию'],
+    how:['Бот берёт аккаунт из каталога и выдаёт покупателю после оплаты.','Завершение аренды и смена пароля происходят на стороне каталога.'],
+    quote:'Привязка идёт к конкретному товару на Playerok.',
+    pages:[['lots','📦 Лоты'],['templates','✉️ Шаблоны'],['settings','⚙️ Настройки']],
+    placeholders:PH_STEAM, templates:TPL_RENT, fields:FLD_RENT,
+    guide:[['🔑 Что делает','Берёт аккаунты из каталога и выдаёт их покупателям.']] },
+  { id:'stars', icon:'⭐', name:'Telegram Stars', sub:'Автоответы и поведение при неудачной выдаче',
+    desc:'Полностью автоматизирует продажу Telegram Stars на Playerok: после оплаты бот сам отправит звёзды покупателю.',
+    perks:['Звёзды уходят на @username покупателя','Автовозврат при неудаче','Команды покупателя в чате'],
+    how:['Автоответы ниже заменяют сообщения, заданные в настройках магазина, для заказов Telegram Stars.','При успешной выдаче заказ подтверждается автоматически — ничего вручную нажимать не нужно.','Если выдача не удалась и включён тумблер «Делать возврат при неудаче» — средства возвращаются покупателю автоматически.'],
+    quote:'Плагин работает только после авторизации через Telegram.',
+    pages:[['templates','✉️ Шаблоны'],['settings','⚙️ Настройки']],
+    placeholders:[['{username}','Telegram-логин покупателя без @'],['{quantity}','Количество звёзд в заказе'],['{ref_code}','Идентификатор заказа (Ref#...)'],['{order_id}','Внутренний ID заказа']],
+    templates:[
+      {k:'ok', title:'Звёзды отправлены', def:'⭐ Отправили {quantity} звёзд на @{username}. Спасибо за заказ!', vars:['quantity','username']},
+      {k:'askUser', title:'Просьба указать логин', def:'Пришлите ваш Telegram @username, чтобы мы отправили {quantity} звёзд.', vars:['quantity']},
+      {k:'badUser', title:'Неверный логин', def:'Не нашли аккаунт @{username}. Проверьте логин и пришлите ещё раз.', vars:['username']}
+    ],
+    fields:[{k:'refund', t:'tog', label:'Делать возврат при неудаче', def:true}],
+    guide:[['⭐ Что делает','После оплаты отправляет звёзды на аккаунт покупателя.']] },
+  { id:'uc', icon:'🎯', name:'PUBG UC', sub:'Прямая доставка UC по ID игрока',
+    desc:'Пополняет UC на ID игрока после оплаты заказа.',
+    perks:['Доставка по ID игрока','Статус заказа в чате','Автоответы покупателю'],
+    how:['Покупатель присылает ID игрока, бот проверяет его и доставляет UC.'], quote:'',
+    pages:[['templates','✉️ Шаблоны']],
+    placeholders:[['{player_id}','ID игрока'],['{amount}','Количество UC']],
+    templates:[{k:'ok', title:'UC доставлены', def:'✅ {amount} UC отправлены на ID {player_id}. Спасибо за покупку!', vars:['amount','player_id']}],
+    guide:[['🎯 Что делает','Пополняет UC по ID игрока.']] }
+];
+
+const TABS = [
+  {id:'shops',t:'Магазины'},{id:'plugins',t:'Плагины'},{id:'goods',t:'Товары'},
+  {id:'history',t:'История'},{id:'hold',t:'Холд'},{id:'stats',t:'Статистика',lock:true},{id:'guides',t:'Гайды'}
+];
+const DEFAULT_GUIDES = [
+  {id:'g1', title:'Как достать токен', text:'Здесь будет пошаговая инструкция.\nВладелец может изменить этот текст во вкладке «Гайды» (кнопка «Редактировать»).'},
+  {id:'g2', title:'Как оплатить Premium', text:'1. Нажмите «Пополнить».\n2. Выберите валюту.\n3. Отправьте точную сумму на адрес. Дробную часть менять нельзя.\n4. Premium включится сам, как только платёж придёт.'}
+];
+
+/* ============================================================
+   СЛУЖЕБНЫЙ КОД
+   ============================================================ */
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); try { tg.setHeaderColor('#121318'); tg.setBackgroundColor('#121318'); } catch(e){} }
+const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || {id:0, first_name:'Гость'};
+const DEMO = !CONFIG.apiBase;
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => Number(n||0).toLocaleString('ru-RU') + ' ₽';
+
+/* --- Демо-сервер (данные на телефоне). Для настоящей работы подключается сервер через apiBase --- */
+const DKEY = 'ph_demo_' + tgUser.id;
+let memStore = null;
+function dload(){ try { const v = localStorage.getItem(DKEY); if (v) return JSON.parse(v); } catch(e){} return memStore; }
+function dsave(s){ memStore = s; try { localStorage.setItem(DKEY, JSON.stringify(s)); } catch(e){} }
+function dstate(){
+  let s = dload();
+  if (!s) { s = {premium:false, balance:0, stores:[], plugins:{}, guides:DEFAULT_GUIDES, payment:null, stats:{months:[]}, hold:{h1:{sum:0,deals:0},h6:{sum:0,deals:0},h24:{sum:0,deals:0},later:{sum:0,deals:0},next:''}}; dsave(s); }
+  return s;
+}
+const randInt = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const demoApi = {
+  getState(){
+    const s = dstate();
+    return {user:{id:tgUser.id, name:[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' ')||'Гость', username:tgUser.username||''},
+      isAdmin:true, premium:s.premium, balance:s.balance, stores:s.stores, plugins:s.plugins, guides:s.guides, payment:s.payment, stats:s.stats, hold:s.hold};
+  },
+  addStore({token}){ const s = dstate(); s.stores.push({id:'s'+Date.now(), name:'Магазин '+(s.stores.length+1), active:true, available:0, hold:0, messages:0, sales:0}); dsave(s); return {ok:true}; },
+  removeStore({id}){ const s = dstate(); s.stores = s.stores.filter(x=>x.id!==id); dsave(s); return {ok:true}; },
+  setPlugin({id,on,settings}){
+    const s = dstate(); const p = s.plugins[id] || {on:false, settings:{}};
+    if (on !== undefined) p.on = on;
+    if (settings) p.settings = settings;
+    s.plugins[id] = p; dsave(s); return {ok:true};
+  },
+  saveGuides({guides}){ const s = dstate(); s.guides = guides; dsave(s); return {ok:true}; },
+  createPayment({walletId}){
+    const s = dstate(); const w = CONFIG.wallets.find(x=>x.id===walletId) || CONFIG.wallets[0];
+    const unit = Math.pow(10, -w.dec);
+    const extra = w.dec >= 2 ? randInt(1,99)*unit : randInt(1,9);
+    const amount = (CONFIG.plan.priceUsd*w.perUsd + extra).toFixed(w.dec);
+    s.payment = {id:'p'+Date.now(), walletId:w.id, amount, expiresAt:Date.now()+CONFIG.payTimeoutMin*60000, status:'pending'};
+    dsave(s); return s.payment;
+  },
+  checkPayment({id}){
+    const s = dstate(); const p = s.payment;
+    if (!p || p.id !== id) return {status:'expired'};
+    if (s.premium) p.status = 'paid'; else if (Date.now() > p.expiresAt) p.status = 'expired';
+    dsave(s); return {status:p.status};
+  },
+  demoPay(){ const s = dstate(); s.premium = true; if (s.payment) s.payment.status='paid'; dsave(s); return {ok:true}; }
+};
+async function call(name, payload){
+  payload = payload || {};
+  if (DEMO) return demoApi[name](payload);
+  const r = await fetch(CONFIG.apiBase + '/api/' + name, {
+    method:'POST', headers:{'Content-Type':'application/json','X-Tg-Init-Data': tg ? tg.initData : ''}, body: JSON.stringify(payload)
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+/* --- Состояние экрана --- */
+let S = null, tab = 'shops', guideEdit = false, openGuideId = null, statsPeriod = 'all';
+let pg = null; // открытая страница плагина: {id, page}
+
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove('show'),2200); }
+function openSupport(){ const url='https://t.me/'+CONFIG.supportUsername; if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank'); }
+function copyText(text, btn){
+  const done = () => { if(btn){ const o=btn.textContent; btn.textContent='Скопировано'; setTimeout(()=>btn.textContent=o,1500);} };
+  const fb = () => { const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} t.remove(); done(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(fb); else fb();
+}
+let payTimer = null, payPoll = null;
+function clearPay(){ clearInterval(payTimer); clearInterval(payPoll); payTimer = payPoll = null; }
+function openSheet(html, after){ $('sheet').innerHTML = html; $('sheet').scrollTop = 0; $('overlay').classList.add('open'); document.body.style.overflow='hidden'; if(after) after(); }
+function closeSheet(){ clearPay(); $('overlay').classList.remove('open'); document.body.style.overflow=''; }
+
+/* ============================================================
+   ОТРИСОВКА
+   ============================================================ */
+const LOGO = `<svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f8bff"/><stop offset="1" stop-color="#1a45d6"/></linearGradient></defs><path d="M12 38 L19 8 H31 C37.5 8 40 12 38.8 17.5 C37.6 23 33 26 27 26 H21.5 L19.5 38 Z M24.3 14.5 L22.7 20.3 H28 C30.5 20.3 32 19 32.4 17.4 C32.8 15.6 31.7 14.5 29.6 14.5 Z" fill="url(#lg)"/></svg>`;
+const TGI = `<span class="tgi"><svg width="11" height="11" viewBox="0 0 24 24"><path d="M3 11.5 21 4l-3.2 16-5.3-4-3 3v-4.5L17 8l-9.5 6.2L3 12.8z" fill="#fff"/></svg></span>`;
+
+function render(){
+  const u = S.user, initial = (u.name||'?').trim().charAt(0).toUpperCase();
+  $('app').innerHTML = `
+    <div class="topbar">${LOGO}<div class="grow"><h1>${esc(CONFIG.appName)}</h1><div class="sub">Панель управления</div></div></div>
+    <div class="chips">
+      <button class="chip" data-act="support">${TGI} Поддержка: @${esc(CONFIG.supportUsername)}</button>
+      <span class="chip star">★ ${esc(CONFIG.version)}</span>
+      ${DEMO ? '<span class="chip demo">Демо-режим</span>' : ''}
+    </div>
+    <div class="card">
+      <div class="row">
+        <div class="avatar"><span>${esc(initial)}</span></div>
+        <div class="grow">
+          <div class="name">${esc(u.name)} ${S.premium ? '<span class="badge">PREMIUM</span>' : ''}</div>
+          <div class="meta">${u.username ? '<span class="u">@'+esc(u.username)+'</span> · ' : ''}ID ${esc(u.id)}</div>
         </div>
-        <button class="btn-wallet" onclick="buyPremium()">Купить PRO</button>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div class="balance"><small>БАЛАНС</small><b>${Number(S.balance||0).toFixed(2)} $</b></div>
+        <div class="grow"></div>
+        <button class="btn primary" data-act="pay">＋ Пополнить</button>
+        <button class="iconbtn" data-act="support" aria-label="Поддержка">💬</button>
+      </div>
     </div>
+    <div class="tabs">${TABS.map(t => `<button class="tab ${tab===t.id?'on':''}" data-act="tab" data-id="${t.id}">${t.t}${t.lock && !S.premium ? ' 🔒' : ''}</button>`).join('')}</div>
+    <div id="view">${view()}</div>`;
+}
 
-    <!-- Вкладки управления -->
-    <div class="tabs-scroller">
-        <div class="tab-btn active" onclick="switchSection('settingsSec', this)">Настройки бота</div>
-        <div class="tab-btn" onclick="switchSection('shopSec', this)">Магазин</div>
-        <div class="tab-btn" onclick="switchSection('statsSec', this)">Статистика</div>
+function view(){
+  if (tab==='plugins' && pg) return pluginPage();
+  switch(tab){
+    case 'shops': return shopsView();
+    case 'plugins': return pluginsView();
+    case 'hold': return holdView();
+    case 'stats': return statsView();
+    case 'guides': return guidesView();
+    default: return emptyView(tab);
+  }
+}
+
+function emptyView(t){
+  const names = {goods:['🛍️','Товары'], history:['🕘','История']};
+  const [ic, title] = names[t];
+  if (!S.stores.length) return `<div class="card empty"><div class="ic">${ic}</div><b>${title}</b>Сначала добавьте магазин по токену.<br><button class="btn primary" data-act="addshop">Добавить магазин</button></div>`;
+  return `<div class="card empty"><div class="ic">${ic}</div><b>${title}</b>Данные появятся, когда бот начнёт работать с вашим магазином.</div>`;
+}
+
+function shopsView(){
+  const sum = k => S.stores.reduce((a,s)=>a+(s[k]||0),0);
+  const stats = `
+    <div class="card"><div class="grid2">
+      <div class="stat"><span class="label">Доступно</span><b>${money(sum('available'))}</b></div>
+      <div class="stat"><span class="label">В холде</span><b>${money(sum('hold'))}</b></div>
+      <div class="stat"><span class="label">Итого</span><b>${money(sum('available')+sum('hold'))}</b></div>
+      <div class="stat"><span class="label">Сообщений</span><b class="${sum('messages')?'neg':''}">${sum('messages')}</b></div>
+      <div class="stat wide"><span class="label">Магазинов</span><b>${S.stores.length}</b></div>
+    </div></div>`;
+  const list = S.stores.map(s => `
+    <div class="card shop">
+      <div class="pic">${esc((s.name||'?').charAt(0))}</div>
+      <div class="grow">
+        <div class="name" style="font-size:16px">${esc(s.name)} <span class="badge green">${s.active?'АКТИВНЫЙ':'ВЫКЛЮЧЕН'}</span></div>
+        <div class="pills"><span class="pill ${s.messages?'r':''}">💬 ${s.messages||0}</span><span class="pill">🛒 ${s.sales||0}</span><span class="pill">💰 ${money(s.available)}</span></div>
+      </div>
+      <button class="gear" data-act="delshop" data-id="${esc(s.id)}" aria-label="Удалить магазин">🗑</button>
+    </div>`).join('');
+  return stats + list + `<div class="btns"><button class="btn primary" data-act="addshop">＋ Добавить магазин</button><button class="btn ghost" data-act="gettoken">🔑 Достать токен</button></div>`;
+}
+
+function holdView(){
+  const h = S.hold || {};
+  const B = [['h1','⚡','До 1 часа','#e8683a'],['h6','🔥','До 6 часов','#f0a93a'],['h24','⏱️','До 24 часов','#43a3f2'],['later','🌙','Позже','#7b8794']];
+  const get = k => (h[k] || {sum:0,deals:0});
+  const total = B.reduce((a,b)=>a+get(b[0]).sum,0), deals = B.reduce((a,b)=>a+get(b[0]).deals,0);
+  return `
+    <div class="card blue"><div class="row" style="align-items:flex-start;gap:16px">
+      <div class="ptile big" style="background:#1d2a5c;border:1px solid #3350a8">❄️</div>
+      <div class="grow"><span class="label">В заморозке</span><div class="big">${money(total)}</div>
+        <div class="meta" style="margin-top:8px"><span class="label">Сделок</span> <b style="color:#fff">${deals}</b> &nbsp; <span class="label">Следующая</span> <b style="color:#fff">${esc(h.next||'—')}</b></div>
+        <div class="meta"><span class="label">Средняя</span> <b style="color:#fff">${money(deals?Math.round(total/deals):0)}</b></div></div>
+    </div></div>
+    <div class="card"><span class="label">Будет разморожено по времени</span>
+      <div class="grid2" style="margin-top:14px">${B.map(b=>{const d=get(b[0]);const pc=total?Math.round(d.sum/total*100):0;return `
+        <div class="bucket" style="--bc:${b[3]}"><div class="hd"><span>${b[1]} ${b[2]}</span><span class="pc">${pc}%</span></div>
+          <div class="v">${money(d.sum)}</div><div class="bar"><i style="width:${pc}%"></i></div><div class="dl">${d.deals} сделок</div></div>`;}).join('')}</div></div>
+    <div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><span class="label">Когда разморозится сумма</span><span class="meta" style="margin:0">Передвиньте ползунок</span></div>
+      <div class="big pos" id="holdSum" style="margin-top:6px;font-size:30px">0 ₽</div>
+      <input type="range" id="holdRange" min="0" max="48" value="0" data-h1="${get('h1').sum}" data-h6="${get('h6').sum}" data-h24="${get('h24').sum}" data-later="${get('later').sum}">
+      <div class="meta" id="holdHrs">Через 0 ч.</div></div>`;
+}
+
+function pluginsView(){
+  return `<div class="label" style="margin:0 2px 12px">Плагины · включайте нужное и настраивайте через шестерёнку</div>` + PLUGINS.map(p => {
+    const locked = !p.free && !S.premium;
+    const st = S.plugins[p.id] || {on:false};
+    const on = !locked && st.on;
+    return `
+    <div class="card">
+      <div class="row" style="align-items:flex-start">
+        <div class="ptile">${p.icon}</div>
+        <div class="grow"><div class="ptitle">${esc(p.name)} ${locked ? '<span class="lockchip">🔒 PREMIUM</span>' : ''}</div><div class="meta">${esc(p.sub)}</div></div>
+        <button class="gear" data-act="openplugin" data-id="${p.id}" aria-label="Настройки">⚙️</button>
+      </div>
+      <div class="desc">${esc(p.desc)}</div>
+      <ul class="perks">${p.perks.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      <div class="pfoot ${on?'on':''}"><span>${on ? 'ПОДКЛЮЧЁН' : 'НЕ ПОДКЛЮЧЁН'}</span>
+        <div class="switch ${on?'on':''}" data-act="toggle" data-id="${p.id}" role="switch" aria-checked="${on}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+/* --- Страница настроек плагина --- */
+function pcfg(id){ const st = S.plugins[id] || {on:false, settings:{}}; st.settings = st.settings || {}; st.settings.templates = st.settings.templates || {}; st.settings.values = st.settings.values || {}; return st; }
+function pluginPage(){
+  const p = PLUGINS.find(x=>x.id===pg.id), st = pcfg(p.id);
+  const page = pg.page || p.pages[0][0];
+  const how = p.how.map(t=>`<p>${esc(t)}</p>`).join('') + (p.quote ? `<div class="quote">❝ ${esc(p.quote)}</div>` : '');
+  return `
+    <div class="card"><div class="phead">
+      <button class="back" data-act="backplugin" aria-label="Назад">‹</button>
+      <div class="ptile big">${p.icon}</div>
+      <div class="grow"><div class="label">Настройки плагина</div><h2>${esc(p.name)}</h2></div>
     </div>
+    <div style="margin-top:12px"><button class="btn soft sm" data-act="plugininfo" data-id="${p.id}">ⓘ Информация</button></div></div>
+    <div class="card how"><div class="label">ⓘ Как работает плагин</div>${how}</div>
+    ${st.on ? '' : '<div class="warnbox">⚠ Плагин выключен — он не работает. Включите переключатель на карточке плагина.</div>'}
+    <div class="tabs sub">${p.pages.map(x=>`<button class="tab ${page===x[0]?'on':''}" data-act="ppage" data-id="${x[0]}">${x[1]}</button>`).join('')}</div>
+    ${pageBody(p, page, st)}`;
+}
+function pageBody(p, page, st){
+  if (page==='templates') {
+    const phs = (p.placeholders||[]).length ? `<div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><span class="label">‹/› Доступные плейсхолдеры</span><span class="meta" style="margin:0;text-align:right;font-size:12px">нажмите, чтобы скопировать</span></div>
+      <div class="phs">${p.placeholders.map(x=>`<button class="ph" data-act="copyph" data-v="${esc(x[0])}"><code>${esc(x[0])}</code><span>${esc(x[1])}</span></button>`).join('')}</div></div>` : '';
+    const tpls = (p.templates||[]).map(t=>`
+      <div class="card tpl"><div class="label">${esc(t.title)}</div>
+        <textarea class="field" data-tpl="${t.k}" rows="3">${esc(st.settings.templates[t.k] != null ? st.settings.templates[t.k] : t.def)}</textarea>
+        <div class="hint">${t.vars && t.vars.length ? 'Переменные: '+t.vars.map(v=>'{'+v+'}').join(', ') : esc(t.hint||'')}</div></div>`).join('');
+    return phs + tpls + `<button class="btn primary block" data-act="savePage" data-id="${p.id}">Сохранить шаблоны</button>`;
+  }
+  if (page==='settings') {
+    const f = (p.fields||[]);
+    if (!f.length) return `<div class="card empty"><div class="ic">⚙️</div><b>Настройки</b>Здесь появятся параметры плагина.</div>`;
+    const v = k => st.settings.values[k];
+    const body = f.map(x => {
+      const val = v(x.k) != null ? v(x.k) : x.def;
+      if (x.t==='tog') return `<div class="frow"><span>${esc(x.label)}</span><div class="switch ${val?'on':''}" data-act="ftog" data-fld="${x.k}"></div></div>`;
+      if (x.t==='seg') return `<label class="fl">${esc(x.label)}</label><div class="seg" data-fld="${x.k}" data-v="${esc(val)}">${x.opts.map(o=>`<button class="${val===o[0]?'on':''}" data-act="fseg" data-k="${x.k}" data-id="${o[0]}">${o[1]}</button>`).join('')}</div>`;
+      if (x.t==='num') return `<label class="fl">${esc(x.label)}</label><input class="field" type="number" inputmode="numeric" data-fld="${x.k}" value="${esc(val)}">`;
+      return `<label class="fl">${esc(x.label)}</label><input class="field" type="text" data-fld="${x.k}" placeholder="${esc(x.ph||'')}" value="${esc(val)}">`;
+    }).join('');
+    return `<div class="card">${body}</div><button class="btn primary block" data-act="savePage" data-id="${p.id}">Сохранить настройки</button>`;
+  }
+  if (page==='lots' && p.id==='boost') {
+    const stores = S.stores.length ? `<label class="fl" style="margin-top:0">Магазин</label><select class="field" data-fld="store">${S.stores.map(s=>`<option>${esc(s.name)}</option>`).join('')}</select>` : '';
+    return `<div class="card">${stores}<div class="empty" style="padding:22px 6px 6px"><div class="ic">📦</div><b>Лоты</b>${S.stores.length ? 'Лоты магазина появятся здесь, когда бот загрузит их.' : 'Сначала добавьте магазин по токену.'}</div></div>`;
+  }
+  const e = (p.empty && p.empty[page]) || (page==='lots' ? ['Лоты','Лоты магазина появятся здесь, когда бот загрузит их.'] : ['Пока пусто','Здесь пока ничего нет.']);
+  return `<div class="card empty"><div class="ic">📦</div><b>${esc(e[0])}</b>${esc(e[1])}</div>`;
+}
 
-    <div class="main-content">
+function statsView(){
+  if (!S.premium) return lockedCard('Статистика', 'Выручка, прибыль, графики по месяцам и экспорт доступны с подпиской Premium.');
+  const periods = [['today','Сегодня'],['week','Неделя'],['month','Месяц'],['all','Всё время']];
+  const st = S.stats || {}, months = st.months || [];
+  const v = k => (st[k] && st[k][statsPeriod]) || 0;
+  const max = Math.max.apply(null, months.map(m=>m.v).concat([1]));
+  return `
+    <div class="tabs sub">${periods.map(p=>`<button class="tab ${statsPeriod===p[0]?'on':''}" data-act="period" data-id="${p[0]}">${p[1]}</button>`).join('')}</div>
+    <div class="card"><span class="label">💰 Финансы</span><div class="grid2" style="margin-top:14px">
+      <div class="inner stat"><span class="label">Грязная выручка</span><b>${money(v('gross'))}</b></div>
+      <div class="inner stat"><span class="label">Чистая прибыль</span><b class="pos">${money(v('net'))}</b></div>
+      <div class="inner stat"><span class="label">Сделок</span><b>${v('deals')}</b></div>
+      <div class="inner stat"><span class="label">Возвратов</span><b class="neg">${v('refunds')}</b></div></div></div>
+    <div class="card"><span class="label">📈 Выручка по месяцам</span>
+      ${months.length ? `<div class="bars">${months.map(m=>`<div><i style="height:${Math.round(m.v/max*100)}%"></i>${esc(m.m)}</div>`).join('')}</div>`
+        : '<div class="empty" style="padding:22px 6px 6px">Пока нет данных. График появится после первых продаж.</div>'}</div>`;
+}
 
-        <!-- Вкладка: Настройки (Полностью по видео) -->
-        <div id="settingsSec" class="content-section active">
-            
-            <!-- Блок 1: Автоматизация -->
-            <div class="panel-card">
-                <div class="card-heading">Автоматизация</div>
-                
-                <div class="control-row" onclick="openModal('modalAutoBoost')">
-                    <div class="setting-info">
-                        <span class="setting-icon">🚀</span>
-                        <div>
-                            <div class="setting-title">Авто-поднятие 🔒</div>
-                            <div class="setting-desc">Расписание поднятия лотов</div>
-                        </div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
+function guidesView(){
+  const items = S.guides.map(g => `
+    <details class="card guide" ${openGuideId===g.id?'open':''}><summary>📘 ${esc(g.title)}</summary><div class="body">${esc(g.text)}</div>
+      ${guideEdit ? `<div class="tools"><button class="btn ghost sm" data-act="editguide" data-id="${esc(g.id)}">Изменить</button><button class="btn danger sm" data-act="delguide" data-id="${esc(g.id)}">Удалить</button></div>` : ''}</details>`).join('');
+  return `<div class="row" style="justify-content:space-between;margin-bottom:12px"><span class="label">Гайды</span>
+      ${S.isAdmin ? `<button class="btn ghost sm" data-act="guideedit">${guideEdit?'Готово':'✏️ Редактировать'}</button>` : ''}</div>
+    ${items || '<div class="card empty">Гайдов пока нет.</div>'}
+    ${guideEdit ? '<button class="btn primary block" data-act="newguide">＋ Добавить гайд</button>' : ''}`;
+}
+function lockedCard(title, text){
+  return `<div class="card empty"><div class="lockbig">🔒</div><b>${esc(title)}</b>${esc(text)}<br><button class="btn primary" data-act="pay">Купить Premium</button></div>`;
+}
 
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">💳</span>
-                        <div>
-                            <div class="setting-title">Авто-вывод 🔒</div>
-                            <div class="setting-desc">Автоматический вывод средств</div>
-                        </div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
+/* ============================================================
+   ОКНА
+   ============================================================ */
+function paywallSheet(what){
+  openSheet(`
+    <div class="shead"><div class="grow"></div><button class="x" data-act="close">✕</button></div>
+    <div class="center"><div class="lockbig">🔒</div><h3>Нужен Premium</h3>
+      <p class="meta" style="margin:10px 0 20px;font-size:14px">${esc(what||'Эта функция')} доступна с подпиской ${esc(CONFIG.plan.name)} за ${CONFIG.plan.priceUsd} $.<br>Доступ откроется сразу после поступления платежа.</p></div>
+    <div class="btns"><button class="btn primary" data-act="pay">Купить Premium</button><button class="btn ghost" data-act="support">Поддержка</button></div>`);
+}
+function infoSheet(id){
+  const p = PLUGINS.find(x=>x.id===id);
+  const guide = p.guide.map(g=>`<div class="sec">${esc(g[0])}</div><p>${esc(g[1]).replace(/\n/g,'<br>')}</p>`).join('');
+  openSheet(`<div class="shead"><div class="ptile">${p.icon}</div><div class="grow"><div class="label">Информация о плагине</div><h3 style="font-size:19px">${esc(p.name)}</h3></div><button class="x" data-act="close">✕</button></div><div class="gbox">${guide}</div>`);
+}
+function addShopSheet(){
+  openSheet(`
+    <div class="shead"><div class="grow"><h3>Добавить магазин</h3><p>Вставьте токен аккаунта Playerok.</p></div><button class="x" data-act="close">✕</button></div>
+    <label class="fl">Токен</label>
+    <input class="field" id="tokenInp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Вставьте токен">
+    <button class="btn primary block" style="margin-top:16px" data-act="saveShop">Добавить магазин</button>
+    <button class="btn ghost block" style="margin-top:10px" data-act="gettoken">Как достать токен</button>`);
+}
+function guideFormSheet(g){
+  openSheet(`
+    <div class="shead"><div class="grow"><h3>${g?'Изменить гайд':'Новый гайд'}</h3></div><button class="x" data-act="close">✕</button></div>
+    <label class="fl">Название</label><input class="field" id="gTitle" type="text" value="${esc(g?g.title:'')}" placeholder="Например: Как настроить автовыдачу">
+    <label class="fl">Текст</label><textarea class="field" id="gText" rows="6" placeholder="Пишите шаги по порядку">${esc(g?g.text:'')}</textarea>
+    <button class="btn primary block" style="margin-top:16px" data-act="saveGuide" data-id="${g?esc(g.id):''}">Сохранить гайд</button>`);
+}
 
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">♻️</span>
-                        <div><div class="setting-title">Авто-восстановление</div></div>
-                    </div>
-                    <div class="switch-toggle active" onclick="this.classList.toggle('active'); event.stopPropagation();"></div>
-                </div>
+/* --- Оплата --- */
+async function paySheet(){
+  let p = S.payment;
+  const live = p && p.status==='pending' && p.expiresAt > Date.now();
+  if (!live) p = await call('createPayment', {walletId: CONFIG.wallets[0].id});
+  S.payment = p; renderPay(p);
+}
+function renderPay(p){
+  clearPay();
+  const w = CONFIG.wallets.find(x=>x.id===p.walletId) || CONFIG.wallets[0];
+  openSheet(`
+    <div class="shead"><div class="grow"><h3>Оплата подписки</h3><p>Отправьте ровно указанную сумму на адрес ниже</p></div><button class="x" data-act="close">✕</button></div>
+    <div class="cur">${CONFIG.wallets.map(x=>`<button class="${x.id===w.id?'on':''}" data-act="wallet" data-id="${x.id}">${esc(x.label)}</button>`).join('')}</div>
+    <span class="timer" id="payTimer">Истекает через --:--</span>
+    <div class="qr" id="qrBox"></div>
+    <div class="qrcap">Отсканируйте QR-код в кошельке</div>
+    <div class="pf"><div class="label">Сумма</div><div class="val"><span class="mono" style="font-size:17px">${esc(p.amount)} ${esc(w.coin)}</span><button class="btn ghost sm" data-act="copy" data-v="${esc(p.amount)}">Копировать</button></div>
+      <div class="warn">Отправьте ровно эту сумму, включая дробную часть</div></div>
+    <div class="pf"><div class="label">Адрес</div><div class="val"><span class="mono">${esc(w.address)}</span><button class="btn ghost sm" data-act="copy" data-v="${esc(w.address)}">Копировать</button></div></div>
+    <div class="status" id="payStatus"><div class="spin"></div>Ожидаем поступление платежа…</div>
+    <div id="payHelp" style="display:none;margin-bottom:10px" class="btns"><button class="btn primary" data-act="support">Написать в поддержку</button></div>
+    ${DEMO ? '<button class="btn soft sm block" style="margin-bottom:10px" data-act="demoPay">Демо: имитировать оплату</button>' : ''}
+    <button class="btn ghost block" data-act="close">Закрыть</button>`,
+  () => {
+    const box = $('qrBox');
+    if (w.qr) box.innerHTML = `<img src="${esc(w.qr)}" alt="QR">`;
+    else if (window.QRCode) new QRCode(box, {text:w.address, width:178, height:178, correctLevel:QRCode.CorrectLevel.M});
+    else box.style.display='none';
+    const tick = () => {
+      const left = Math.max(0, p.expiresAt - Date.now());
+      const m = Math.floor(left/60000), s = Math.floor(left%60000/1000);
+      const el = $('payTimer'); if (el) el.textContent = 'Истекает через ' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      if (left === 0) setPayStatus('expired');
+    };
+    tick(); payTimer = setInterval(tick, 1000);
+    payPoll = setInterval(async () => { try { const r = await call('checkPayment', {id:p.id}); if (r.status !== 'pending') setPayStatus(r.status); } catch(e){} }, 4000);
+  });
+}
+async function setPayStatus(status){
+  clearPay();
+  const el = $('payStatus'); if (!el) return;
+  if (status === 'paid') {
+    const t = $('payTimer'); if (t) { t.className='timer ok'; t.textContent='Платёж получен'; }
+    el.className = 'status ok'; el.innerHTML = '✓ Оплата получена — Premium активирован';
+    S = await call('getState'); render(); toast('Premium активирован');
+  } else {
+    el.className = 'status bad';
+    el.textContent = status === 'mismatch' ? 'Сумма платежа не совпала с указанной.' : 'Время на оплату вышло.';
+    $('payHelp').style.display = 'flex';
+  }
+}
 
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">⚡</span>
-                        <div><div class="setting-title">Авто-выполнение</div></div>
-                    </div>
-                    <div class="switch-toggle active" onclick="this.classList.toggle('active'); event.stopPropagation();"></div>
-                </div>
-            </div>
+/* ============================================================
+   ДЕЙСТВИЯ
+   ============================================================ */
+function collectPage(p){
+  const st = pcfg(p.id), s = st.settings;
+  document.querySelectorAll('[data-tpl]').forEach(el => { s.templates[el.dataset.tpl] = el.value; });
+  document.querySelectorAll('input[data-fld],select[data-fld]').forEach(el => { s.values[el.dataset.fld] = el.type==='number' ? (+el.value||0) : el.value; });
+  document.querySelectorAll('.seg[data-fld]').forEach(el => { s.values[el.dataset.fld] = el.dataset.v; });
+  document.querySelectorAll('.switch[data-fld]').forEach(el => { s.values[el.dataset.fld] = el.classList.contains('on'); });
+  return s;
+}
+const actions = {
+  close: closeSheet, support: openSupport,
+  tab(d){ tab = d.id; if (d.id!=='plugins') pg = null; render(); },
+  pay: paySheet,
+  async wallet(d){ const p = await call('createPayment', {walletId:d.id}); S.payment = p; renderPay(p); },
+  copy(d, el){ copyText(d.v, el); },
+  async demoPay(){ await call('demoPay'); setPayStatus('paid'); },
+  addshop: addShopSheet,
+  async saveShop(){
+    const token = $('tokenInp').value.trim();
+    if (token.length < 10) return toast('Токен слишком короткий');
+    await call('addStore', {token}); S = await call('getState'); closeSheet(); render(); toast('Магазин добавлен');
+  },
+  async delshop(d){ if (!confirm('Удалить магазин?')) return; await call('removeStore', {id:d.id}); S = await call('getState'); render(); },
+  gettoken(){ const g = S.guides.find(x=>/токен/i.test(x.title)); closeSheet(); tab='guides'; pg=null; if (g) openGuideId = g.id; render(); window.scrollTo(0,0); },
 
-            <!-- Блок 2: Общение и Отзывы -->
-            <div class="panel-card">
-                <div class="card-heading">Общение с клиентами</div>
-                
-                <div class="control-row" onclick="openModal('modalAutoReply')">
-                    <div class="setting-info">
-                        <span class="setting-icon">💬</span>
-                        <div>
-                            <div class="setting-title">Автоответчик</div>
-                            <div class="setting-desc">Фильтры, команды и точное совпадение</div>
-                        </div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
+  openplugin(d){
+    const p = PLUGINS.find(x=>x.id===d.id);
+    if (!p.free && !S.premium) return paywallSheet(p.name);
+    pg = {id:d.id, page:p.pages[0][0]}; render(); window.scrollTo(0,0);
+  },
+  backplugin(){ pg = null; render(); },
+  ppage(d){ const p = PLUGINS.find(x=>x.id===pg.id); collectPage(p); pg.page = d.id; render(); },
+  plugininfo(d){ infoSheet(d.id); },
+  async toggle(d){
+    const p = PLUGINS.find(x=>x.id===d.id);
+    if (!p.free && !S.premium) return paywallSheet(p.name);
+    const cur = (S.plugins[d.id] || {}).on;
+    await call('setPlugin', {id:d.id, on:!cur}); S = await call('getState'); render();
+  },
+  ftog(d, el){ el.classList.toggle('on'); },
+  fseg(d, el){ const seg = el.parentElement; seg.dataset.v = d.id; seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b===el)); },
+  copyph(d, el){ copyText(d.v, null); toast('Скопировано: ' + d.v); },
+  async savePage(d){
+    const p = PLUGINS.find(x=>x.id===d.id);
+    const settings = collectPage(p);
+    await call('setPlugin', {id:d.id, settings}); S = await call('getState'); render(); toast('Сохранено');
+  },
 
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">📝</span>
-                        <div><div class="setting-title">Заготовки ответов</div></div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
+  period(d){ statsPeriod = d.id; render(); },
+  guideedit(){ guideEdit = !guideEdit; render(); },
+  newguide(){ guideFormSheet(null); },
+  editguide(d){ guideFormSheet(S.guides.find(x=>x.id===d.id)); },
+  async saveGuide(d){
+    const title = $('gTitle').value.trim(), text = $('gText').value.trim();
+    if (!title) return toast('Введите название');
+    const guides = S.guides.slice();
+    if (d.id) { const g = guides.find(x=>x.id===d.id); g.title = title; g.text = text; } else guides.push({id:'g'+Date.now(), title, text});
+    await call('saveGuides', {guides}); S = await call('getState'); closeSheet(); render(); toast('Гайд сохранён');
+  },
+  async delguide(d){ if (!confirm('Удалить гайд?')) return; await call('saveGuides', {guides:S.guides.filter(x=>x.id!==d.id)}); S = await call('getState'); render(); }
+};
+document.addEventListener('click', e => {
+  if (e.target.id === 'overlay') return closeSheet();
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const fn = actions[el.dataset.act];
+  if (fn) { e.preventDefault(); Promise.resolve(fn(el.dataset, el)).catch(err => { console.error(err); toast('Что-то пошло не так. Попробуйте ещё раз.'); }); }
+});
+document.addEventListener('input', e => {
+  if (e.target.id !== 'holdRange') return;
+  const r = e.target, h = +r.value, d = r.dataset;
+  const sum = (h>=1?+d.h1:0) + (h>=6?+d.h6:0) + (h>=24?+d.h24:0) + (h>=48?+d.later:0);
+  $('holdSum').textContent = money(sum); $('holdHrs').textContent = 'Через ' + h + ' ч.';
+});
 
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">⭐</span>
-                        <div>
-                            <div class="setting-title">Мониторинг отзывов 🔒</div>
-                            <div class="setting-desc">Уведомления и авто-ответы на оценки</div>
-                        </div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
-                
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">🔔</span>
-                        <div>
-                            <div class="setting-title">Напоминания</div>
-                            <div class="setting-desc">Об отзыве и подтверждении</div>
-                        </div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
-            </div>
-
-            <!-- Блок 3: Система и Контроль -->
-            <div class="panel-card">
-                <div class="card-heading">Система</div>
-                
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">📱</span>
-                        <div><div class="setting-title">Уведомления</div></div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
-
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">🚫</span>
-                        <div><div class="setting-title">Черный список</div></div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
-
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">⚙️</span>
-                        <div><div class="setting-title">Переключатели</div></div>
-                    </div>
-                    <div class="setting-arrow">›</div>
-                </div>
-                
-                <div class="control-row">
-                    <div class="setting-info">
-                        <span class="setting-icon">🔄</span>
-                        <div style="color: #ef4444;"><div class="setting-title">Сбросить настройки</div></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Заглушки других вкладок -->
-        <div id="shopSec" class="content-section"><div class="panel-card"><div class="card-heading">Управление магазинами</div><p style="color:#64748b; font-size:13px;">Здесь будут лоты и магазины.</p></div></div>
-        <div id="statsSec" class="content-section"><div class="panel-card"><div class="card-heading">Финансы</div><p style="color:#64748b; font-size:13px;">Графики и доходы.</p></div></div>
-    </div>
-
-    <!-- Модальное окно: Авто-поднятие (Пример интерфейса настройки функции) -->
-    <div id="modalAutoBoost" class="modal-overlay" onclick="if(event.target===this) closeModal('modalAutoBoost')">
-        <div class="modal-window">
-            <div class="modal-header">
-                Авто-поднятие 🚀
-                <span class="close-icon" onclick="closeModal('modalAutoBoost')">✕</span>
-            </div>
-            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 16px;">Функция доступна только с подпиской PREMIUM.</div>
-            
-            <input type="text" class="calc-input" placeholder="Ссылка на товар (лоты Playerok)">
-            <input type="time" class="calc-input" value="12:00">
-            
-            <button class="btn-action">Добавить в расписание</button>
-        </div>
-    </div>
-
-    <!-- Модальное окно: Автоответчик (Пример сложной настройки) -->
-    <div id="modalAutoReply" class="modal-overlay" onclick="if(event.target===this) closeModal('modalAutoReply')">
-        <div class="modal-window">
-            <div class="modal-header">
-                Автоответчик 💬
-                <span class="close-icon" onclick="closeModal('modalAutoReply')">✕</span>
-            </div>
-            
-            <div class="control-row" style="background: #0d131f;">
-                <div><div class="setting-title">Точное соответствие</div></div>
-                <div class="switch-toggle" onclick="this.classList.toggle('active')"></div>
-            </div>
-            <div class="control-row" style="background: #0d131f;">
-                <div><div class="setting-title">Уведомление в Telegram</div></div>
-                <div class="switch-toggle active" onclick="this.classList.toggle('active')"></div>
-            </div>
-            
-            <input type="text" class="calc-input" placeholder="!команда или ключевое слово" style="margin-top: 10px;">
-            <textarea class="calc-input" placeholder="Текст ответа..." style="height: 80px; resize: none;"></textarea>
-            
-            <button class="btn-action">Сохранить автоответ</button>
-        </div>
-    </div>
-
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-
-        function buyPremium() {
-            document.getElementById('premMarker').style.display = 'block';
-            alert('PRO доступ активирован! Замки разблокированы.');
-        }
-
-        function switchSection(secId, element) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            document.getElementById(secId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        function openModal(id) { 
-            document.getElementById(id).style.display = 'flex'; 
-        }
-        function closeModal(id) { 
-            document.getElementById(id).style.display = 'none'; 
-        }
-    </script>
+(async function init(){
+  try { S = await call('getState'); }
+  catch(e){ $('app').innerHTML = '<div class="card empty"><div class="ic">⚠️</div><b>Не удалось загрузить данные</b>Проверьте интернет и откройте приложение заново.</div>'; return; }
+  render();
+})();
+</script>
 </body>
 </html>
