@@ -183,11 +183,70 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
 .center{text-align:center}
 .sec{margin:18px 0 8px;font-weight:700;font-size:15px}
 .gbox p{color:#c9cbd9;font-size:14px;margin-bottom:8px}
-.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#2f3040;border:1px solid var(--line2);padding:12px 18px;border-radius:13px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90%}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#2f3040;border:1px solid var(--line2);padding:12px 18px;border-radius:13px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90%}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .bars{display:flex;align-items:flex-end;gap:8px;height:140px;margin-top:8px}
 .bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;font-size:11px;color:var(--mute)}
 .bars i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#43a3f2,#1a59ff);min-height:3px}
+
+.badge.admin{background:linear-gradient(180deg,#b79bff,#7a52e8);color:#fff}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);margin-top:5px;flex:none;box-shadow:0 0 8px rgba(67,181,99,.7)}
+.kpi{display:flex;align-items:center;gap:14px;overflow:hidden;position:relative}
+.kpi::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:var(--kc)}
+.kpi .ico{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:rgba(255,255,255,.05);border:1px solid var(--line2);flex:none}
+.kpi b{font-size:30px;font-weight:800;display:block;line-height:1.1}
+.kpi small{color:var(--mute);font-size:13px}
+.wf{margin-top:12px;background:#1d1e26;border:1px solid var(--line2);border-radius:15px;padding:6px 14px}
+.wfr{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;color:#c9cbd9}
+.wfr:last-child{border-bottom:0}
+.wfr b{font-weight:700}
+.wfr small{color:var(--dim);font-size:11px;margin-left:6px}
+.wfr.total{font-weight:700;color:#fff}
+.hero{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid var(--line2);border-radius:15px;padding:14px;margin-bottom:12px}
+.hero .big{font-size:30px;margin:6px 0 4px}
+.hero .sub{color:var(--mute);font-size:12px}
+.rec{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rec:last-child{border-bottom:0}
+.rec .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:21px;background:#1d2547;border:1px solid #2b3b78;flex:none}
+.rec b{font-size:19px;display:block}
+.rec .meta{margin-top:1px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:#8e90a1;font-size:10px;font-family:inherit}
+.legend{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:12px;color:var(--mute)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.lrow{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14px}
+.lrow i{width:11px;height:11px;border-radius:3px;flex:none}
+.lrow span{flex:1}
+.lrow em{font-style:normal;color:var(--mute);width:52px;text-align:right}
+.heat{display:grid;grid-template-columns:24px repeat(24,1fr);gap:3px;align-items:center}
+.heat .hl{font-size:10px;color:var(--mute)}
+.heat .hc{aspect-ratio:1;border-radius:4px;background:#25262f}
+.heat .h1{background:#1f3d2a}.heat .h2{background:#2a6b3d}.heat .h3{background:#35a050}.heat .h4{background:#6fe08a}
+.hleg{display:flex;align-items:center;justify-content:flex-end;gap:5px;margin-top:10px;font-size:11px;color:var(--mute)}
+.hleg i{width:13px;height:13px;border-radius:4px;display:inline-block}
+.goodrow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.goodrow:last-child{border-bottom:0}
+.goodrow .rk{width:26px;color:var(--mute);font-weight:700;font-size:13px}
+.goodrow .gi{width:42px;height:42px;border-radius:11px;background:#1d2547;border:1px solid #2b3b78;display:grid;place-items:center;font-size:19px;flex:none}
+.goodrow .gt{font-weight:600;font-size:14px;line-height:1.25}
+.goodrow .qty{font-weight:700;text-align:right;font-size:14px}
+.tag{display:inline-block;padding:2px 8px;border-radius:7px;font-size:11px;font-weight:700;margin:3px 4px 0 0;background:#3a2c1d;color:#f0b469;border:1px solid #5b4326}
+.tag.b{background:#17234a;color:#9cb8ff;border-color:#2b4aa8}
+.minibar{height:4px;border-radius:4px;background:#33333d;margin-top:6px;overflow:hidden}
+.minibar i{display:block;height:100%;background:#2d68ff;border-radius:4px}
+.costbtn{padding:6px 10px;border-radius:9px;font-size:12px;font-weight:700;background:#1d3a2b;color:var(--green);border:1px solid #2b5a3d;white-space:nowrap}
+.costbtn.no{background:#24242e;color:var(--mute);border-color:var(--line2)}
+.stars{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13px;color:#c9cbd9}
+.stars span:first-child{width:34px;color:var(--amber)}
+.stars .minibar{flex:1;margin:0;height:7px}
+.stars .minibar i{background:var(--green)}
+.arow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.arow:last-child{border-bottom:0}
+.arow b{font-size:14px}
+.pill.ok{background:rgba(67,181,99,.14);border-color:rgba(67,181,99,.4);color:var(--green)}
+.pill.warn{background:rgba(240,169,58,.12);border-color:rgba(240,169,58,.4);color:var(--amber)}
+.search{width:100%;background:#1d1e26;border:1px solid var(--line2);border-radius:13px;padding:12px 14px;outline:none;margin-bottom:10px}
+select.field{appearance:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -256,7 +315,7 @@ const PLUGINS = [
            ['🎯 Режим «Топ»','Параметр «Место» — сколько первых позиций проверять. Например, 3 значит «я хочу быть в топ-3». Как только лот выпал из топ-3 — он поднимается.'],
            ['🕐 Режим «Часы»','Подъём в заданное время, например в 13:00, 18:00 и 20:00, когда покупателей больше всего.'],
            ['⚡ Быстрый старт','1. Добавьте магазин по токену.\n2. Включите переключатель плагина.\n3. Выберите магазин и режим для каждого лота.']] },
-  { id:'dump', icon:'📉', name:'Авто Дамп', sub:'Автоперебивание цен конкурентов',
+  { id:'dump', icon:'📉', name:'Автодемпер', sub:'Автоперебивание цен конкурентов',
     desc:'Следит за рынком и автоматически опускает цену ваших лотов на 1 ₽ ниже конкурента — строго в заданном диапазоне.',
     perks:['Индивидуальный диапазон для каждого лота','Проверка рынка каждые 5 минут','Фильтр конкурентов по числу отзывов','Только лоты без PREMIUM'],
     how:['Цена никогда не выходит за пределы диапазона «от, до».','Нижняя граница «от» — ваша защита: ниже неё плагин цену не опустит.'],
@@ -302,20 +361,12 @@ const PLUGINS = [
       {k:'badUser', title:'Неверный логин', def:'Не нашли аккаунт @{username}. Проверьте логин и пришлите ещё раз.', vars:['username']}
     ],
     fields:[{k:'refund', t:'tog', label:'Делать возврат при неудаче', def:true}],
-    guide:[['⭐ Что делает','После оплаты отправляет звёзды на аккаунт покупателя.']] },
-  { id:'uc', icon:'🎯', name:'PUBG UC', sub:'Прямая доставка UC по ID игрока',
-    desc:'Пополняет UC на ID игрока после оплаты заказа.',
-    perks:['Доставка по ID игрока','Статус заказа в чате','Автоответы покупателю'],
-    how:['Покупатель присылает ID игрока, бот проверяет его и доставляет UC.'], quote:'',
-    pages:[['templates','✉️ Шаблоны']],
-    placeholders:[['{player_id}','ID игрока'],['{amount}','Количество UC']],
-    templates:[{k:'ok', title:'UC доставлены', def:'✅ {amount} UC отправлены на ID {player_id}. Спасибо за покупку!', vars:['amount','player_id']}],
-    guide:[['🎯 Что делает','Пополняет UC по ID игрока.']] }
+    guide:[['⭐ Что делает','После оплаты отправляет звёзды на аккаунт покупателя.']] }
 ];
 
 const TABS = [
   {id:'shops',t:'Магазины'},{id:'plugins',t:'Плагины'},{id:'goods',t:'Товары'},
-  {id:'history',t:'История'},{id:'hold',t:'Холд'},{id:'stats',t:'Статистика',lock:true},{id:'guides',t:'Гайды'}
+  {id:'history',t:'История'},{id:'hold',t:'Холд'},{id:'stats',t:'Статистика',lock:true},{id:'guides',t:'Гайды'},{id:'admin',t:'🛡 Админ',admin:true}
 ];
 const DEFAULT_GUIDES = [
   {id:'g1', title:'Как достать токен', text:'Здесь будет пошаговая инструкция.\nВладелец может изменить этот текст во вкладке «Гайды» (кнопка «Редактировать»).'},
@@ -338,17 +389,41 @@ const DKEY = 'ph_demo_' + tgUser.id;
 let memStore = null;
 function dload(){ try { const v = localStorage.getItem(DKEY); if (v) return JSON.parse(v); } catch(e){} return memStore; }
 function dsave(s){ memStore = s; try { localStorage.setItem(DKEY, JSON.stringify(s)); } catch(e){} }
+const ZERO_HOLD = () => ({h1:{sum:0,deals:0},h6:{sum:0,deals:0},h24:{sum:0,deals:0},later:{sum:0,deals:0},next:''});
 function dstate(){
   let s = dload();
-  if (!s) { s = {premium:false, balance:0, stores:[], plugins:{}, guides:DEFAULT_GUIDES, payment:null, stats:{months:[]}, hold:{h1:{sum:0,deals:0},h6:{sum:0,deals:0},h24:{sum:0,deals:0},later:{sum:0,deals:0},next:''}}; dsave(s); }
-  return s;
+  if (!s) s = {premium:false, until:null, balance:0, stores:[], plugins:{}, guides:DEFAULT_GUIDES, payment:null};
+  s.grants = s.grants || []; s.users = s.users || []; s.paylog = s.paylog || []; s.config = s.config || {}; s.costs = s.costs || {};
+  if (!s.stats || !s.stats.p) s.stats = {updated:'', p:{}};
+  if (!s.hold || !s.hold.h1) s.hold = ZERO_HOLD();
+  dsave(s); return s;
 }
 const randInt = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+function sampleStats(){
+  const months = [['май 26',4,3,1200],['июн 26',104,52,18400],['июл 26',48,22,9600],['авг 26',118,24,21000],['сен 26',55,26,11800],['окт 26',37,16,17200]].map(a=>({m:a[0],sales:a[1],refunds:a[2],rev:a[3]}));
+  const cats = [['Робуксы',25790],['Предметы',11807],['Подписки',7563],['ИИ-сервисы',7056],['Бусты',6847],['Дизайн',5176],['Софт',4580],['Остальное',21155]].map(a=>({name:a[0],sum:a[1]}));
+  const heat = []; for (let d=0; d<7; d++){ const r=[]; for (let h=0; h<24; h++){ const v=((d*53+h*29+7)%13); r.push(h<8?0:(v>9?4:v>7?3:v>5?2:v>3?1:0)); } heat.push(r); }
+  const names = [['Подписка · 12 месяцев','Подписки · 1 год',86,50],['Игровая валюта · 100','Игры · валюта',61,75],['Аккаунт · Premium','Аккаунты',36,20],['Ключ активации','Софт',27,0],['Подписка · 3 месяца','Подписки',20,0],['Бустер · 300','Игры',18,150],['Игровая валюта · 200','Игры · валюта',15,100],['Дизайн-пакет','Дизайн',14,0],['Звёзды · 100','Telegram',13,0],['Промокод','Прочее',7,0]];
+  const goods = names.map((n,i)=>({title:n[0],sub:n[1],qty:n[2],boost:i%3===0,similar:[85,60,35,28,19,17,14,13,12,6][i],cost:n[3]}));
+  const top = [4290,2390,2190,1899,999,999,999,999,999,999].map((v,i)=>({name:'Покупатель '+(i+1),sum:v}));
+  const base = {months,cats,heat,goods,peak:{label:'Сб в 21:00',n:10},boostPeak:{label:'Сб в 21:00',n:10,sum:2020},
+    buyers:{unique:350,regular:10,top,rating:{avg:4.95,out:217,pct:60.1,stars:[207,9,1,0,0]}},
+    bestDay:{sum:5470,date:'07.10.2026',deals:4},priciest:{sum:4290,title:'Подписка · 12 месяцев',buyer:'Покупатель 1'},
+    streak:{days:31,note:'нет активной серии'},activeDays:{n:92,of:135}};
+  const mk = f => { const gross=Math.round(94264*f), plat=Math.round(11964*f), promo=Math.round(16731*f), wd=Math.round(4938*f), cost=Math.round(13795*f), net=gross-plat-promo-wd;
+    return Object.assign({deals:Math.round(361*f),refunds:Math.round(172*f),gross,platform:plat,promo,promoCount:Math.round(861*f),withdraw:wd,net,costSum:cost,costDeals:Math.round(216*f),profit:net-cost,margin:44.6}, base); };
+  return {updated:'3 минуты назад', p:{today:mk(0.01),week:mk(0.06),month:mk(0.22),all:mk(1)}};
+}
+function liveStatus(p){ return p.status==='pending' && Date.now()>p.expiresAt ? 'expired' : p.status; }
 const demoApi = {
   getState(){
-    const s = dstate();
-    return {user:{id:tgUser.id, name:[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' ')||'Гость', username:tgUser.username||''},
-      isAdmin:true, premium:s.premium, balance:s.balance, stores:s.stores, plugins:s.plugins, guides:s.guides, payment:s.payment, stats:s.stats, hold:s.hold};
+    const s = dstate(), active = s.premium && (!s.until || s.until > Date.now());
+    const me = {id:tgUser.id, name:[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' ')||'Гость', username:tgUser.username||''};
+    const users = [{id:me.id, name:me.name, premium:active, until:s.until}].concat(s.users);
+    const payments = s.paylog.slice().reverse().map(p => Object.assign({}, p, {status:liveStatus(p)}));
+    return {user:me, isAdmin:true, premium:active, premiumUntil:s.until||null, balance:s.balance, stores:s.stores, plugins:s.plugins, guides:s.guides,
+      payment:s.payment, stats:s.stats, hold:s.hold, config:s.config, costs:s.costs, sample:!!s.sample,
+      admin:{counts:{users:users.length, premium:users.filter(u=>u.premium).length, pending:payments.filter(p=>p.status==='pending').length}, users, payments}};
   },
   addStore({token}){ const s = dstate(); s.stores.push({id:'s'+Date.now(), name:'Магазин '+(s.stores.length+1), active:true, available:0, hold:0, messages:0, sales:0}); dsave(s); return {ok:true}; },
   removeStore({id}){ const s = dstate(); s.stores = s.stores.filter(x=>x.id!==id); dsave(s); return {ok:true}; },
@@ -364,8 +439,10 @@ const demoApi = {
     const unit = Math.pow(10, -w.dec);
     const extra = w.dec >= 2 ? randInt(1,99)*unit : randInt(1,9);
     const amount = (CONFIG.plan.priceUsd*w.perUsd + extra).toFixed(w.dec);
-    s.payment = {id:'p'+Date.now(), walletId:w.id, amount, expiresAt:Date.now()+CONFIG.payTimeoutMin*60000, status:'pending'};
-    dsave(s); return s.payment;
+    const p = {id:'p'+Date.now(), walletId:w.id, amount, expiresAt:Date.now()+CONFIG.payTimeoutMin*60000, status:'pending'};
+    s.payment = p;
+    s.paylog.push({id:p.id, uid:tgUser.id, name:tgUser.first_name||'Гость', amount, coin:w.coin, status:'pending', ts:Date.now(), expiresAt:p.expiresAt});
+    dsave(s); return p;
   },
   checkPayment({id}){
     const s = dstate(); const p = s.payment;
@@ -373,23 +450,69 @@ const demoApi = {
     if (s.premium) p.status = 'paid'; else if (Date.now() > p.expiresAt) p.status = 'expired';
     dsave(s); return {status:p.status};
   },
-  demoPay(){ const s = dstate(); s.premium = true; if (s.payment) s.payment.status='paid'; dsave(s); return {ok:true}; }
+  demoPay(){
+    const s = dstate(); s.premium = true; s.until = null; if (s.payment) s.payment.status = 'paid';
+    s.paylog.forEach(p => { if (s.payment && p.id===s.payment.id) p.status='paid'; });
+    dsave(s); return {ok:true};
+  },
+  adminGrant({target,days}){
+    const s = dstate(); const t = String(target||'').trim().replace('@',''); const until = days ? Date.now()+days*864e5 : null;
+    if (!t || t===String(tgUser.id) || t===tgUser.username) { s.premium = true; s.until = until; }
+    else { let u = s.users.find(x=>String(x.id)===t); if (!u) { u = {id:t,name:t,premium:false,until:null}; s.users.push(u); } u.premium = true; u.until = until; }
+    dsave(s); return {ok:true};
+  },
+  adminRevoke({target}){
+    const s = dstate(); const t = String(target||'').trim().replace('@','');
+    if (!t || t===String(tgUser.id) || t===tgUser.username) { s.premium = false; s.until = null; }
+    else { const u = s.users.find(x=>String(x.id)===t); if (u) { u.premium = false; u.until = null; } }
+    dsave(s); return {ok:true};
+  },
+  adminConfirm({id}){
+    const s = dstate(); const p = s.paylog.find(x=>x.id===id);
+    if (p) { p.status = 'paid'; s.premium = true; s.until = null; if (s.payment && s.payment.id===id) s.payment.status='paid'; }
+    dsave(s); return {ok:true};
+  },
+  adminSaveConfig(cfg){ const s = dstate(); s.config = cfg; dsave(s); return {ok:true}; },
+  setCost({title,cost}){ const s = dstate(); s.costs[title] = cost; dsave(s); return {ok:true}; },
+  refreshStats(){ const s = dstate(); s.stats.updated = 'только что'; dsave(s); return {ok:true}; },
+  demoSample(){
+    const s = dstate(); s.stats = sampleStats(); s.sample = true;
+    s.hold = {h1:{sum:0,deals:0},h6:{sum:0,deals:0},h24:{sum:863,deals:3},later:{sum:109,deals:1},next:'через 6ч 6м'};
+    if (!s.stores.length) s.stores.push({id:'s1', name:'Мой магазин', active:true, available:1, hold:972, messages:1, sales:1});
+    dsave(s); return {ok:true};
+  },
+  demoReset(){ const s = dstate(); s.stats = {updated:'', p:{}}; s.hold = ZERO_HOLD(); s.sample = false; s.stores = []; dsave(s); return {ok:true}; }
 };
 async function call(name, payload){
   payload = payload || {};
-  if (DEMO) return demoApi[name](payload);
-  const r = await fetch(CONFIG.apiBase + '/api/' + name, {
-    method:'POST', headers:{'Content-Type':'application/json','X-Tg-Init-Data': tg ? tg.initData : ''}, body: JSON.stringify(payload)
-  });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
+  let r;
+  if (DEMO) r = await demoApi[name](payload);
+  else {
+    const resp = await fetch(CONFIG.apiBase + '/api/' + name, {
+      method:'POST', headers:{'Content-Type':'application/json','X-Tg-Init-Data': tg ? tg.initData : ''}, body: JSON.stringify(payload)
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    r = await resp.json();
+  }
+  if (name === 'getState') applyConfig(r.config);
+  return r;
 }
 
 /* --- Состояние экрана --- */
 let S = null, tab = 'shops', guideEdit = false, openGuideId = null, statsPeriod = 'all';
 let pg = null; // открытая страница плагина: {id, page}
+let viewAsUser = false, statsTab = 'summary';
+const ADM = () => !!(S && S.isAdmin) && !viewAsUser;
+const PREM = () => !!(S && S.premium) || ADM();
+const fmt = n => Number(n||0).toLocaleString('ru-RU');
+function applyConfig(c){
+  if (!c) return;
+  if (c.priceUsd) CONFIG.plan.priceUsd = +c.priceUsd;
+  if (c.supportUsername) CONFIG.supportUsername = String(c.supportUsername).replace('@','');
+  (c.wallets||[]).forEach(w => { const x = CONFIG.wallets.find(y=>y.id===w.id); if (x) { if (w.address) x.address = w.address; if (w.qr != null) x.qr = w.qr; } });
+}
 
-function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove('show'),2200); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove('show'),1600); }
 function openSupport(){ const url='https://t.me/'+CONFIG.supportUsername; if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank'); }
 function copyText(text, btn){
   const done = () => { if(btn){ const o=btn.textContent; btn.textContent='Скопировано'; setTimeout(()=>btn.textContent=o,1500);} };
@@ -415,13 +538,14 @@ function render(){
       <button class="chip" data-act="support">${TGI} Поддержка: @${esc(CONFIG.supportUsername)}</button>
       <span class="chip star">★ ${esc(CONFIG.version)}</span>
       ${DEMO ? '<span class="chip demo">Демо-режим</span>' : ''}
+      ${viewAsUser ? '<button class="chip demo" data-act="adminback">Режим пользователя · вернуться</button>' : ''}
     </div>
     <div class="card">
       <div class="row">
         <div class="avatar"><span>${esc(initial)}</span></div>
         <div class="grow">
-          <div class="name">${esc(u.name)} ${S.premium ? '<span class="badge">PREMIUM</span>' : ''}</div>
-          <div class="meta">${u.username ? '<span class="u">@'+esc(u.username)+'</span> · ' : ''}ID ${esc(u.id)}</div>
+          <div class="name">${esc(u.name)} ${ADM() ? '<span class="badge admin">ADMIN</span>' : ''}${S.premium ? '<span class="badge">PREMIUM</span>' : ''}</div>
+          <div class="meta">${u.username ? '<span class="u">@'+esc(u.username)+'</span> · ' : ''}ID ${esc(u.id)}${S.premium && S.premiumUntil ? ' · до '+new Date(S.premiumUntil).toLocaleDateString('ru-RU') : ''}</div>
         </div>
       </div>
       <div class="row" style="margin-top:14px">
@@ -431,7 +555,7 @@ function render(){
         <button class="iconbtn" data-act="support" aria-label="Поддержка">💬</button>
       </div>
     </div>
-    <div class="tabs">${TABS.map(t => `<button class="tab ${tab===t.id?'on':''}" data-act="tab" data-id="${t.id}">${t.t}${t.lock && !S.premium ? ' 🔒' : ''}</button>`).join('')}</div>
+    <div class="tabs">${TABS.filter(t=>!t.admin||ADM()).map(t => `<button class="tab ${tab===t.id?'on':''}" data-act="tab" data-id="${t.id}">${t.t}${t.lock && !PREM() ? ' 🔒' : ''}</button>`).join('')}</div>
     <div id="view">${view()}</div>`;
 }
 
@@ -442,6 +566,7 @@ function view(){
     case 'plugins': return pluginsView();
     case 'hold': return holdView();
     case 'stats': return statsView();
+    case 'admin': return adminView();
     case 'guides': return guidesView();
     default: return emptyView(tab);
   }
@@ -500,7 +625,7 @@ function holdView(){
 
 function pluginsView(){
   return `<div class="label" style="margin:0 2px 12px">Плагины · включайте нужное и настраивайте через шестерёнку</div>` + PLUGINS.map(p => {
-    const locked = !p.free && !S.premium;
+    const locked = !p.free && !PREM();
     const st = S.plugins[p.id] || {on:false};
     const on = !locked && st.on;
     return `
@@ -567,24 +692,184 @@ function pageBody(p, page, st){
   return `<div class="card empty"><div class="ic">📦</div><b>${esc(e[0])}</b>${esc(e[1])}</div>`;
 }
 
+const STATS_TABS = [['summary','📊 Сводка'],['forecast','🎯 Прогноз и рекорды'],['dynamics','📈 Динамика'],['hours','🕒 Часы активности'],['goods','📦 Товары'],['cost','🧮 Себестоимость'],['buyers','👥 Покупатели']];
+const PALETTE = ['#1a59ff','#22c7e0','#43b563','#f0a93a','#a259d9','#ef6a5b','#f4d03f','#43a3f2','#8b7cf6'];
+function curD(){ const st = S.stats || {}; return (st.p && st.p[statsPeriod]) || {}; }
+function smooth(pts){
+  if (pts.length < 2) return '';
+  let d = 'M' + pts[0][0] + ',' + pts[0][1];
+  for (let i=0; i<pts.length-1; i++){
+    const p0 = pts[i-1]||pts[i], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2]||p2;
+    d += ' C' + (p1[0]+(p2[0]-p0[0])/6) + ',' + (p1[1]+(p2[1]-p0[1])/6) + ' ' + (p2[0]-(p3[0]-p1[0])/6) + ',' + (p2[1]-(p3[1]-p1[1])/6) + ' ' + p2[0] + ',' + p2[1];
+  }
+  return d;
+}
+function lineChart(months){
+  const W=340,H=170,L=34,B=22,T=8,R=8, max=Math.max.apply(null, months.map(m=>m.rev).concat([1]));
+  const x = i => L + (months.length>1 ? i*(W-L-R)/(months.length-1) : (W-L-R)/2), y = v => T + (H-T-B)*(1-v/max);
+  const pts = months.map((m,i)=>[x(i), y(m.rev)]);
+  const path = smooth(pts);
+  const grid = [0,.25,.5,.75,1].map(f=>`<line x1="${L}" x2="${W-R}" y1="${y(max*f)}" y2="${y(max*f)}" stroke="#2f303c" stroke-width="1"/><text x="${L-6}" y="${y(max*f)+3}" text-anchor="end">${max*f>=1000?Math.round(max*f/1000)+'K':Math.round(max*f)}</text>`).join('');
+  const lbl = months.map((m,i)=>`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${esc(m.m)}</text>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}"><defs><linearGradient id="la" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a59ff" stop-opacity=".35"/><stop offset="1" stop-color="#1a59ff" stop-opacity="0"/></linearGradient></defs>${grid}<path d="${path} L${x(months.length-1)},${y(0)} L${x(0)},${y(0)} Z" fill="url(#la)"/><path d="${path}" fill="none" stroke="#3b78ff" stroke-width="2.5" stroke-linecap="round"/>${lbl}</svg>`;
+}
+function stackChart(months){
+  const W=340,H=170,L=34,B=22,T=8,R=8, max=Math.max.apply(null, months.map(m=>m.sales+m.refunds).concat([1]));
+  const bw = (W-L-R)/months.length*0.62, y = v => T + (H-T-B)*(1-v/max);
+  const bars = months.map((m,i)=>{ const cx = L + (i+.5)*(W-L-R)/months.length; const ys = y(m.sales), yt = y(m.sales+m.refunds);
+    return `<rect x="${cx-bw/2}" y="${ys}" width="${bw}" height="${y(0)-ys}" fill="#43b563" rx="2"/><rect x="${cx-bw/2}" y="${yt}" width="${bw}" height="${ys-yt}" fill="#ef6a5b" rx="2"/><text x="${cx}" y="${H-6}" text-anchor="middle">${esc(m.m)}</text>`; }).join('');
+  const grid = [0,.25,.5,.75,1].map(f=>`<line x1="${L}" x2="${W-R}" y1="${y(max*f)}" y2="${y(max*f)}" stroke="#2f303c"/><text x="${L-6}" y="${y(max*f)+3}" text-anchor="end">${Math.round(max*f)}</text>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}">${grid}${bars}</svg><div class="legend"><span><i style="background:#43b563"></i>Продажи</span><span><i style="background:#ef6a5b"></i>Возвраты</span></div>`;
+}
+function donut(cats){
+  const total = cats.reduce((a,c)=>a+c.sum,0) || 1, R = 62, C = 2*Math.PI*R; let off = 0;
+  const seg = cats.map((c,i)=>{ const len = c.sum/total*C; const el = `<circle cx="100" cy="100" r="${R}" fill="none" stroke="${PALETTE[i%PALETTE.length]}" stroke-width="30" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 100 100)"/>`; off += len; return el; }).join('');
+  const legend = cats.map((c,i)=>`<div class="lrow"><i style="background:${PALETTE[i%PALETTE.length]}"></i><span>${esc(c.name)}</span><b>${money(c.sum)}</b><em>${(c.sum/total*100).toFixed(1)}%</em></div>`).join('');
+  return `<svg class="chart" viewBox="0 0 200 200" style="max-width:240px;margin:0 auto">${seg}</svg><div style="margin-top:12px">${legend}</div>`;
+}
+function emptyChart(t){ return `<div class="empty" style="padding:22px 6px 6px">${t||'Пока нет данных.'}</div>`; }
+
 function statsView(){
-  if (!S.premium) return lockedCard('Статистика', 'Выручка, прибыль, графики по месяцам и экспорт доступны с подпиской Premium.');
+  if (!PREM()) return lockedCard('Статистика', 'Выручка, прибыль, графики, часы активности и покупатели доступны с подпиской Premium.');
+  const st = S.stats || {}, D = curD();
   const periods = [['today','Сегодня'],['week','Неделя'],['month','Месяц'],['all','Всё время']];
-  const st = S.stats || {}, months = st.months || [];
-  const v = k => (st[k] && st[k][statsPeriod]) || 0;
-  const max = Math.max.apply(null, months.map(m=>m.v).concat([1]));
-  return `
+  const top = `
+    <div class="card"><div class="row" style="align-items:flex-start;gap:12px"><div class="dot"></div>
+      <div class="grow"><div class="meta" style="margin:0">Последняя проверка:</div><b>${esc(st.updated||'ещё не было')}</b></div>
+      <div class="meta" style="margin:0;text-align:right;max-width:130px">Автообновление раз в сутки</div></div>
+      <div class="btns" style="margin-top:12px"><button class="btn soft sm" data-act="refreshStats">Обновить сейчас</button><button class="btn soft sm" data-act="refreshStats">Пересобрать</button></div></div>
     <div class="tabs sub">${periods.map(p=>`<button class="tab ${statsPeriod===p[0]?'on':''}" data-act="period" data-id="${p[0]}">${p[1]}</button>`).join('')}</div>
-    <div class="card"><span class="label">💰 Финансы</span><div class="grid2" style="margin-top:14px">
-      <div class="inner stat"><span class="label">Грязная выручка</span><b>${money(v('gross'))}</b></div>
-      <div class="inner stat"><span class="label">Чистая прибыль</span><b class="pos">${money(v('net'))}</b></div>
-      <div class="inner stat"><span class="label">Сделок</span><b>${v('deals')}</b></div>
-      <div class="inner stat"><span class="label">Возвратов</span><b class="neg">${v('refunds')}</b></div></div></div>
-    <div class="card"><span class="label">📈 Выручка по месяцам</span>
-      ${months.length ? `<div class="bars">${months.map(m=>`<div><i style="height:${Math.round(m.v/max*100)}%"></i>${esc(m.m)}</div>`).join('')}</div>`
-        : '<div class="empty" style="padding:22px 6px 6px">Пока нет данных. График появится после первых продаж.</div>'}</div>`;
+    <div style="margin:-4px 0 14px;display:flex;gap:10px;align-items:center"><button class="btn soft sm" data-act="exportCsv">⬇ Экспорт CSV</button>${S.sample ? '<span class="chip demo" style="padding:5px 11px">Пример данных</span>' : ''}</div>
+    <div class="tabs sub">${STATS_TABS.map(t=>`<button class="tab ${statsTab===t[0]?'on':''}" data-act="stab" data-id="${t[0]}">${t[1]}</button>`).join('')}</div>`;
+  const fn = {summary:sSummary, forecast:sForecast, dynamics:sDynamics, hours:sHours, goods:sGoods, cost:sCost, buyers:sBuyers}[statsTab];
+  return top + fn(D);
+}
+function kpi(ic, label, val, sub, color){ return `<div class="card kpi" style="--kc:${color}"><div class="ico">${ic}</div><div><span class="label">${label}</span><b>${val}</b><small>${sub}</small></div></div>`; }
+function sSummary(D){
+  const all = (D.deals||0) + (D.refunds||0), pct = all ? (D.refunds/all*100).toFixed(2) : '0';
+  const row = (l, v, cls, extra) => `<div class="wfr"><span>${l}${extra?`<small>${extra}</small>`:''}</span><b class="${cls||''}">${v}</b></div>`;
+  return `
+    ${kpi('✅','Успешных сделок',fmt(D.deals),'сделок','#43b563')}
+    ${kpi('↩️','Возвратов',`<span class="neg">${fmt(D.refunds)}</span>`,`${pct}% от всех`,'#ef6a5b')}
+    ${kpi('📊','Всего',fmt(all),'включая возвраты','#3b78ff')}
+    <div class="card"><span class="label">💰 Финансы</span>
+      <div class="hero" style="margin-top:12px"><span class="label">Грязная выручка</span><div class="big">${money(D.gross)}</div><div class="sub">сумма всех продаж за ${fmt(D.deals)} сделок</div></div>
+      <div class="hero"><span class="label">Чистая прибыль</span><div class="big pos">${money(D.net)}</div><div class="sub">после комиссии площадки, бустов и комиссии на вывод 6%</div></div>
+      <div class="wf">
+        ${row('Грязная выручка', money(D.gross))}
+        ${row('– Комиссия площадки', '−'+money(D.platform), 'neg')}
+        ${row('– Платное продвижение', '−'+money(D.promo), 'neg', '× '+fmt(D.promoCount))}
+        ${row('– Комиссия на вывод (6%)', '−'+money(D.withdraw), 'neg')}
+        <div class="wfr total"><span>Итого на руки</span><b class="pos">${money(D.net)}</b></div>
+        ${row('– Себестоимость', '−'+money(D.costSum), 'neg', 'по '+fmt(D.costDeals)+' из '+fmt(D.deals)+' сделок')}
+        <div class="wfr total"><span>Прибыль с учётом закупки</span><b class="pos">${money(D.profit)}</b></div>
+      </div>
+      <div class="hero" style="margin-top:12px"><span class="label">Прибыль с учётом закупки</span><div class="big pos">${money(D.profit)}</div><div class="sub">по ${fmt(D.costDeals)} из ${fmt(D.deals)} сделок с заданной закупкой · ${fmt(Math.max(0,(D.deals||0)-(D.costDeals||0)))} без</div></div>
+      <div class="hero" style="margin-bottom:0"><span class="label">Маржа</span><div class="big pos">${D.margin||0}%</div><div class="sub">прибыль ÷ цену, с учётом вывода 6%</div></div>
+    </div>`;
+}
+function sForecast(D){
+  const bd = D.bestDay || {}, pr = D.priciest || {}, sk = D.streak || {}, ad = D.activeDays || {};
+  const r = (ic, l, v, m) => `<div class="rec"><div class="ico">${ic}</div><div><span class="label">${l}</span><b>${v}</b><div class="meta">${m}</div></div></div>`;
+  return `<div class="card"><div class="row"><div class="ptile" style="background:#1d2547;border:1px solid #2b3b78">🎯</div><div><b style="font-size:18px">Прогноз и рекорды</b><div class="meta">Куда идём и что уже сделано</div></div></div></div>
+    <div class="card"><span class="label">🏆 Рекорды и достижения</span><div style="margin-top:6px">
+      ${r('🏆','Лучший день', money(bd.sum), bd.date ? esc(bd.date)+' · '+fmt(bd.deals)+' сделки' : 'пока нет данных')}
+      ${r('💎','Самая дорогая сделка', money(pr.sum), pr.title ? esc(pr.title)+' · '+esc(pr.buyer||'') : 'пока нет данных')}
+      ${r('🔥','Серия продаж', fmt(sk.days)+' дн.', esc(sk.note||'нет активной серии'))}
+      ${r('📅','Активных дней', fmt(ad.n)+' из '+fmt(ad.of), ad.of ? Math.round(ad.n/ad.of*100)+'% времени с продажами' : 'пока нет данных')}
+    </div></div>`;
+}
+function sDynamics(D){
+  const m = D.months || [], c = D.cats || [];
+  return `<div class="card"><span class="label">📈 Выручка по месяцам</span>${m.length ? lineChart(m) : emptyChart()}</div>
+    <div class="card"><span class="label">📊 Сделки и возвраты по месяцам</span>${m.length ? stackChart(m) : emptyChart()}</div>
+    <div class="card"><span class="label">🎮 Выручка по категориям</span>${c.length ? donut(c) : emptyChart()}</div>`;
+}
+function sHours(D){
+  const h = D.heat, days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+  let grid = '';
+  if (h) {
+    grid = '<div class="heat"><span></span>' + Array.from({length:24},(_,i)=>`<span class="hl">${i%3===0?i:''}</span>`).join('') +
+      h.map((row,d)=>`<span class="hl">${days[d]}</span>` + row.map(v=>`<span class="hc h${v}"></span>`).join('')).join('') + '</div>' +
+      '<div class="hleg">меньше <i style="background:#25262f"></i><i style="background:#1f3d2a"></i><i style="background:#2a6b3d"></i><i style="background:#35a050"></i><i style="background:#6fe08a"></i> больше</div>';
+  }
+  const pk = D.peak, bp = D.boostPeak;
+  return `<div class="card"><div class="row"><div class="ptile" style="background:#1d2547;border:1px solid #2b3b78">🕒</div><div><b style="font-size:18px">Активность по часам</b><div class="meta">Когда больше всего покупок и буст-окна</div></div></div></div>
+    <div class="card"><span class="label">🔥 Когда лучше всего продаётся</span>
+      <div class="meta" style="margin:8px 0 14px">${pk ? 'Пиковое время: <b style="color:#fff">'+esc(pk.label)+'</b> ('+fmt(pk.n)+' продаж)' : 'Пока нет данных'}</div>${grid || emptyChart()}</div>
+    <div class="card"><span class="label">🚀 Лучшие часы для буста</span><div class="meta" style="margin-top:8px">${bp ? 'Пик с бустом: <b style="color:#fff">'+esc(bp.label)+'</b> ('+fmt(bp.n)+' продаж, '+money(bp.sum)+')' : 'Пока нет данных'}</div></div>`;
+}
+function costOf(g){ const c = (S.costs||{})[g.title]; return c != null ? c : (g.cost||0); }
+function sGoods(D){
+  const g = D.goods || []; window._goods = g;
+  const mx = Math.max.apply(null, g.map(x=>x.qty).concat([1]));
+  const rows = g.map((x,i)=>`<div class="goodrow"><span class="rk">#${i+1}</span><div class="gi">🛍</div>
+    <div class="grow"><div class="gt">${esc(x.title)}</div><div class="meta" style="font-size:12px">${esc(x.sub)}</div>
+      <div>${x.boost?'<span class="tag">🚀 буст</span>':''}${x.similar?`<span class="tag b">+${fmt(x.similar)} похожих</span>`:''}</div><div class="minibar"><i style="width:${Math.round(x.qty/mx*100)}%"></i></div></div>
+    <div style="text-align:right"><div class="qty">${fmt(x.qty)} шт</div><button class="costbtn ${costOf(x)?'':'no'}" data-act="costedit" data-i="${i}">${costOf(x)?'закупка '+money(costOf(x)):'+ закупка'}</button></div></div>`).join('');
+  return `<div class="card"><div class="row"><div class="ptile" style="background:#1d2547;border:1px solid #2b3b78">📦</div><div><b style="font-size:18px">Товары</b><div class="meta">Топ по продажам, выручке и сравнение с бустом</div></div></div></div>
+    <div class="card"><span class="label">🏆 Топ-10 товаров по количеству продаж</span><div style="margin-top:8px">${rows || emptyChart()}</div></div>`;
+}
+function costRows(q){
+  const g = (window._goods||[]), ql = (q||'').toLowerCase();
+  return g.map((x,i)=>({x,i})).filter(o=>!ql || o.x.title.toLowerCase().includes(ql)).map(o=>`<div class="goodrow"><div class="gi">🛍</div>
+    <div class="grow"><div class="gt">${esc(o.x.title)}</div><div class="meta" style="font-size:12px">${esc(o.x.sub)}</div></div>
+    <button class="costbtn ${costOf(o.x)?'':'no'}" data-act="costedit" data-i="${o.i}">${costOf(o.x)?'закупка '+money(costOf(o.x)):'+ закупка'}</button></div>`).join('') || emptyChart('Ничего не найдено.');
+}
+function sCost(D){
+  window._goods = D.goods || [];
+  return `<div class="card"><div class="row"><div class="ptile" style="background:#1d2547;border:1px solid #2b3b78">🧮</div><div><b style="font-size:18px">Себестоимость</b><div class="meta">Задайте закупку для любого продукта</div></div></div></div>
+    <div class="card"><input class="search" id="costSearch" placeholder="Поиск товара по названию…"><div id="costList">${costRows('')}</div></div>`;
+}
+function sBuyers(D){
+  const b = D.buyers || {}, rt = b.rating || {}, top = b.top || [], mx = Math.max.apply(null, top.map(t=>t.sum).concat([1]));
+  const uniq = b.unique || 0;
+  const rows = top.map((t,i)=>`<div class="goodrow"><span class="rk">#${i+1}</span><div class="gi" style="border-radius:50%">${esc((t.name||'?').charAt(0))}</div>
+    <div class="grow"><div class="gt">${esc(t.name)}</div><div class="minibar"><i style="width:${Math.round(t.sum/mx*100)}%"></i></div></div><div class="qty">${money(t.sum)}</div></div>`).join('');
+  const stars = [5,4,3,2,1].map((n,i)=>{ const v = (rt.stars||[])[i]||0, mxs = Math.max.apply(null,(rt.stars||[0]).concat([1])); return `<div class="stars"><span>★ ${n}</span><div class="minibar"><i style="width:${Math.round(v/mxs*100)}%"></i></div><span style="width:30px;text-align:right;color:var(--mute)">${v}</span></div>`; }).join('');
+  return `<div class="card"><div class="row"><div class="ptile" style="background:#1d2547;border:1px solid #2b3b78">👥</div><div><b style="font-size:18px">Покупатели и отзывы</b><div class="meta">Кто покупает и как оценивают</div></div></div></div>
+    <div class="card"><span class="label">👥 Покупатели</span><div class="grid2" style="margin-top:12px">
+      <div class="inner stat"><span class="label">Уникальных</span><b>${fmt(uniq)}</b></div>
+      <div class="inner stat"><span class="label">Постоянных (2+ покупки)</span><b>${fmt(b.regular)}</b><div class="meta">${uniq?Math.round((b.regular||0)/uniq*100):0}% от уникальных</div></div></div></div>
+    <div class="card"><span class="label">💸 Топ-10 покупателей по выручке</span><div style="margin-top:8px">${rows || emptyChart()}</div></div>
+    <div class="card"><span class="label">⭐ Отзывы</span><div class="grid2" style="margin-top:12px">
+      <div class="inner stat"><span class="label">Средний рейтинг</span><b>${rt.avg||'—'}</b><div class="meta">из 5</div></div>
+      <div class="inner stat"><span class="label">Оставили отзыв</span><b>${fmt(rt.out)}</b><div class="meta">${rt.pct||0}% от продаж</div></div></div>
+      <div style="margin-top:14px">${stars}</div></div>`;
 }
 
+/* ---------- Админ ---------- */
+function usersRows(q){
+  const ql = (q||'').toLowerCase().replace('@','');
+  const list = ((S.admin||{}).users||[]).filter(u=>!ql || String(u.id).includes(ql) || String(u.name).toLowerCase().includes(ql));
+  return list.map(u=>`<div class="arow"><div class="grow"><b>${esc(u.name)}</b><div class="meta">ID ${esc(u.id)}${u.premium && u.until ? ' · до '+new Date(u.until).toLocaleDateString('ru-RU') : ''}</div></div>
+    <span class="pill ${u.premium?'ok':''}">${u.premium?'PREMIUM':'без Premium'}</span><button class="btn ghost sm" data-act="pickuser" data-id="${esc(u.id)}">Выбрать</button></div>`).join('') || '<div class="meta" style="padding:8px 0">Никого не найдено.</div>';
+}
+function adminView(){
+  const A = S.admin || {counts:{}, payments:[]}, c = A.counts || {};
+  const fmtT = ts => new Date(ts).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  const stLbl = {pending:['ждём','warn'],paid:['оплачен','ok'],expired:['время вышло',''],mismatch:['не та сумма','warn']};
+  const pays = (A.payments||[]).slice(0,15).map(p=>{ const l = stLbl[p.status]||[p.status,'']; return `<div class="arow"><div class="grow"><b>${esc(p.amount)} ${esc(p.coin)}</b><div class="meta">${esc(p.name)} · ID ${esc(p.uid)} · ${fmtT(p.ts)}</div></div><span class="pill ${l[1]}">${l[0]}</span>${p.status!=='paid' ? `<button class="btn soft sm" data-act="admconfirm" data-id="${esc(p.id)}">Подтвердить</button>` : ''}</div>`; }).join('');
+  const wl = CONFIG.wallets.map(w=>`<label class="fl">${esc(w.label)} — адрес</label><input class="field" id="cfgW_${w.id}" value="${esc(w.address)}"><label class="fl" style="margin-top:8px">${esc(w.label)} — ссылка на QR (не обязательно)</label><input class="field" id="cfgQ_${w.id}" value="${esc(w.qr||'')}" placeholder="https://…">`).join('');
+  return `
+    <div class="card"><div class="grid2">
+      <div class="stat"><span class="label">Пользователей</span><b>${fmt(c.users)}</b></div>
+      <div class="stat"><span class="label">С Premium</span><b>${fmt(c.premium)}</b></div>
+      <div class="stat wide"><span class="label">Ждут оплаты</span><b class="${c.pending?'pos':''}">${fmt(c.pending)}</b></div></div></div>
+    <div class="card"><span class="label">🎁 Выдать или забрать Premium</span>
+      <label class="fl">Telegram ID или @ник (пусто — себе)</label><input class="field" id="admTarget" placeholder="например 123456789">
+      <label class="fl">Срок</label><select class="field" id="admDays"><option value="30">30 дней</option><option value="90">90 дней</option><option value="365">1 год</option><option value="0">Навсегда</option></select>
+      <div class="btns" style="margin-top:14px"><button class="btn primary" data-act="admgrant">Выдать</button><button class="btn danger" data-act="admrevoke">Забрать</button></div></div>
+    <div class="card"><span class="label">💳 Платежи</span><div class="meta" style="margin:6px 0 4px">Если человек отправил не ту сумму, нажмите «Подтвердить».</div>${pays || '<div class="meta" style="padding:8px 0">Платежей пока нет.</div>'}</div>
+    <div class="card"><span class="label">👥 Пользователи</span><input class="search" id="admSearch" placeholder="Поиск по имени или ID" style="margin-top:10px"><div id="admUsers">${usersRows('')}</div></div>
+    <div class="card"><span class="label">⚙️ Настройки оплаты</span>
+      <label class="fl">Цена Premium, $</label><input class="field" id="cfgPrice" type="number" step="0.01" value="${esc(CONFIG.plan.priceUsd)}">
+      <label class="fl">Ник поддержки (без @)</label><input class="field" id="cfgSupport" value="${esc(CONFIG.supportUsername)}">
+      ${wl}<button class="btn primary block" style="margin-top:16px" data-act="admsave">Сохранить настройки</button></div>
+    <div class="card"><span class="label">🔍 Проверка</span><div class="meta" style="margin:6px 0 12px">Посмотрите приложение так, как его видит обычный пользователь: с замками и без админ-вкладки.</div>
+      <button class="btn ghost block" data-act="viewuser">Посмотреть как пользователь</button>
+      ${DEMO ? `<div class="btns" style="margin-top:10px"><button class="btn soft" data-act="sampleOn">Пример данных</button><button class="btn ghost" data-act="sampleOff">Очистить</button></div>` : ''}</div>`;
+}
 function guidesView(){
   const items = S.guides.map(g => `
     <details class="card guide" ${openGuideId===g.id?'open':''}><summary>📘 ${esc(g.title)}</summary><div class="body">${esc(g.text)}</div>
@@ -710,7 +995,7 @@ const actions = {
 
   openplugin(d){
     const p = PLUGINS.find(x=>x.id===d.id);
-    if (!p.free && !S.premium) return paywallSheet(p.name);
+    if (!p.free && !PREM()) return paywallSheet(p.name);
     pg = {id:d.id, page:p.pages[0][0]}; render(); window.scrollTo(0,0);
   },
   backplugin(){ pg = null; render(); },
@@ -718,7 +1003,7 @@ const actions = {
   plugininfo(d){ infoSheet(d.id); },
   async toggle(d){
     const p = PLUGINS.find(x=>x.id===d.id);
-    if (!p.free && !S.premium) return paywallSheet(p.name);
+    if (!p.free && !PREM()) return paywallSheet(p.name);
     const cur = (S.plugins[d.id] || {}).on;
     await call('setPlugin', {id:d.id, on:!cur}); S = await call('getState'); render();
   },
@@ -732,6 +1017,41 @@ const actions = {
   },
 
   period(d){ statsPeriod = d.id; render(); },
+  stab(d){ statsTab = d.id; render(); },
+  async refreshStats(){ await call('refreshStats'); S = await call('getState'); render(); toast('Статистика обновлена'); },
+  exportCsv(){
+    const D = curD();
+    const rows = [['Показатель','Значение'],['Успешных сделок',D.deals||0],['Возвратов',D.refunds||0],['Грязная выручка',D.gross||0],['Комиссия площадки',D.platform||0],['Платное продвижение',D.promo||0],['Комиссия на вывод',D.withdraw||0],['Чистая прибыль',D.net||0],['Себестоимость',D.costSum||0],['Прибыль с учётом закупки',D.profit||0]];
+    copyText(rows.map(r=>r.join(';')).join('\n')); toast('Таблица скопирована — вставьте в Excel или Google Таблицы');
+  },
+  costedit(d){
+    const g = (window._goods||[])[+d.i]; if (!g) return;
+    openSheet(`<div class="shead"><div class="grow"><h3>Закупка</h3><p>${esc(g.title)}</p></div><button class="x" data-act="close">✕</button></div>
+      <label class="fl">Сколько стоит вам один товар, ₽</label><input class="field" id="costInp" type="number" inputmode="numeric" value="${costOf(g)||''}" placeholder="0">
+      <button class="btn primary block" style="margin-top:16px" data-act="costsave" data-i="${d.i}">Сохранить</button>`);
+  },
+  async costsave(d){
+    const g = (window._goods||[])[+d.i]; const v = +$('costInp').value || 0;
+    await call('setCost', {title:g.title, cost:v}); S = await call('getState'); closeSheet(); render(); toast('Закупка сохранена');
+  },
+  async admgrant(){
+    await call('adminGrant', {target:$('admTarget').value, days:+$('admDays').value});
+    S = await call('getState'); render(); toast('Premium выдан');
+  },
+  async admrevoke(){
+    if (!confirm('Забрать Premium?')) return;
+    await call('adminRevoke', {target:$('admTarget').value}); S = await call('getState'); render(); toast('Premium снят');
+  },
+  async admconfirm(d){ await call('adminConfirm', {id:d.id}); S = await call('getState'); render(); toast('Платёж подтверждён, Premium выдан'); },
+  pickuser(d){ $('admTarget').value = d.id; $('admTarget').scrollIntoView({block:'center'}); },
+  async admsave(){
+    const cfg = {priceUsd:+$('cfgPrice').value||CONFIG.plan.priceUsd, supportUsername:$('cfgSupport').value.trim(), wallets:CONFIG.wallets.map(w=>({id:w.id, address:$('cfgW_'+w.id).value.trim(), qr:$('cfgQ_'+w.id).value.trim()}))};
+    await call('adminSaveConfig', cfg); S = await call('getState'); render(); toast('Настройки сохранены');
+  },
+  viewuser(){ viewAsUser = true; tab = 'shops'; render(); window.scrollTo(0,0); },
+  adminback(){ viewAsUser = false; tab = 'admin'; render(); },
+  async sampleOn(){ await call('demoSample'); S = await call('getState'); render(); toast('Пример данных включён'); },
+  async sampleOff(){ await call('demoReset'); S = await call('getState'); render(); toast('Данные очищены'); },
   guideedit(){ guideEdit = !guideEdit; render(); },
   newguide(){ guideFormSheet(null); },
   editguide(d){ guideFormSheet(S.guides.find(x=>x.id===d.id)); },
@@ -751,6 +1071,8 @@ document.addEventListener('click', e => {
   if (fn) { e.preventDefault(); Promise.resolve(fn(el.dataset, el)).catch(err => { console.error(err); toast('Что-то пошло не так. Попробуйте ещё раз.'); }); }
 });
 document.addEventListener('input', e => {
+  if (e.target.id === 'admSearch') { $('admUsers').innerHTML = usersRows(e.target.value); return; }
+  if (e.target.id === 'costSearch') { $('costList').innerHTML = costRows(e.target.value); return; }
   if (e.target.id !== 'holdRange') return;
   const r = e.target, h = +r.value, d = r.dataset;
   const sum = (h>=1?+d.h1:0) + (h>=6?+d.h6:0) + (h>=24?+d.h24:0) + (h>=48?+d.later:0);
@@ -760,6 +1082,15 @@ document.addEventListener('input', e => {
 (async function init(){
   try { S = await call('getState'); }
   catch(e){ $('app').innerHTML = '<div class="card empty"><div class="ic">⚠️</div><b>Не удалось загрузить данные</b>Проверьте интернет и откройте приложение заново.</div>'; return; }
+  try {
+    const q = new URLSearchParams(location.search), t = q.get('tab'), pl = q.get('plugin');
+    if (t && TABS.some(x=>x.id===t)) tab = t;
+    if (pl) {
+      const p = PLUGINS.find(x=>x.id===pl);
+      if (p && (p.free || PREM())) { tab = 'plugins'; pg = {id:pl, page:p.pages[0][0]}; }
+      else if (p) tab = 'plugins';
+    }
+  } catch(e){}
   render();
 })();
 </script>
